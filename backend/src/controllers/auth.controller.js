@@ -26,7 +26,7 @@ const sendTokenResponse = (user, res, message) => {
 }
 
 export const registerController = async (req, res) => {
-       const { fullname, email, password, contact } = req.body;
+       const { fullname, email, password, contact, isSeller } = req.body;
 
        const isUserExist = await userModel.exists({
               $or: [
@@ -43,7 +43,8 @@ export const registerController = async (req, res) => {
               fullname,
               email,
               password,
-              contact
+              contact,
+              role: isSeller ? "seller" : "buyer"
        });
 
        sendTokenResponse(user, res, 'User registered successfully');
