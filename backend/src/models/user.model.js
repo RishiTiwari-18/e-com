@@ -16,7 +16,6 @@ const userSchema = new mongoose.Schema({
     },
     contact: {
         type: String,
-        required: [true, 'Contact number is required'],
         unique: true,
         trim: true,
         // countryCode: String,
@@ -33,11 +32,18 @@ const userSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: [true, 'Password is required'],
         minlength: [8, 'Password must be at least 8 characters long'],
         select: false,
     },
-},{
+    googleId: {
+        type: String,
+        unique: true,
+        sparse: true, 
+    },
+    avatar: {
+        type: String,
+    },
+}, {
     timestamps: true
 });
 

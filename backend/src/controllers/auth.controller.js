@@ -4,15 +4,13 @@ import AppError from "../utils/appError.js";
 import jwt from "jsonwebtoken";
 
 const sendTokenResponse = (user, res, message) => {
-       const token = jwt.sign({ id: user._id, role: user.role }, config.jwtSecret, {expiresIn: '7d'});
-       res.cookie('token', token,{
+       const token = jwt.sign({ id: user._id, role: user.role }, config.jwtSecret, { expiresIn: '7d' });
+       res.cookie('token', token, {
               httpOnly: true,
-              // secure: process.env.NODE_ENV === 'production',
-              // sameSite: 'strict',
               maxAge: 7 * 24 * 60 * 60 * 1000,
        })
 
-              res.status(201).json({
+       res.status(201).json({
               success: true,
               message,
               user: {
@@ -66,10 +64,36 @@ export const getMeController = async (req, res) => {
 
        if (!user) {
               throw new AppError('User not found', 404);
-       }      
-       
+       }
+
        res.status(200).json({
-              status: 'success',
+              status: true,
               user
        })
+}
+
+export const googleAuthController = async (req, res) => {
+       const { id, displayName, emails, photos } = req.user
+       const email = emails[0].value
+       const photo = photos?.[0]?.value
+
+       let user = await userModel.findOne({ email })
+
+       if (!user) {
+              user = await userModel.create({
+                     fullname: displayName,
+                     email,
+                     googleId: id,
+                     avatar: photo
+              })
+
+       }
+
+       const token = jwt.sign({ id: user._id, role: user.role }, config.jwtSecret, { expiresIn: '7d' });
+       res.cookie('token', token, {
+              httpOnly: true,
+              maxAge: 7 * 24 * 60 * 60 * 1000,
+       })
+                            
+       res.redirect('http://localhost:5173')
 }

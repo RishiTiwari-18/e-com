@@ -11,3 +11,17 @@ export const registerUserApi = async (payload) => {
     })
     return res.data
 }
+
+export const loginUserApi = async (payload) => {
+    const { email, password } = payload
+    const res = await api.post('/auth/login', {
+        email,
+        password
+    })
+    return res.data
+}
+
+export const getMeApi = async () => {
+    const res = await api.get('/auth/get-me')
+    return res.data
+}
