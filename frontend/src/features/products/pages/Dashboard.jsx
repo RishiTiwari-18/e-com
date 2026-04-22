@@ -45,7 +45,7 @@ function ProductRow({ product }) {
   )
 }
 
-export default function ProductsPage() {
+export default function Dashboard() {
   const { handleGetProducts } = useProduct()
   const { items, loading } = useSelector((state) => state.products)
   const navigate = useNavigate()
@@ -66,15 +66,13 @@ export default function ProductsPage() {
     <main className='min-h-screen px-6 py-10 text-stone-900'>
       <section className='mx-auto w-full max-w-6xl space-y-10'>
         <div className='flex flex-col gap-4 md:flex-row md:items-end md:justify-between'>
-          <div className='space-y-3'>
+          <div className='space-y-6'>
             <p className='text-xs font-semibold uppercase tracking-[0.35em] text-stone-500'>Product catalog</p>
             <h1 className='text-4xl font-semibold tracking-tight'>All added products</h1>
-            <p className='max-w-2xl text-sm text-stone-500 md:text-base'>
-              Review the products you have already listed and jump back into creation whenever you want.
-            </p>
+
           </div>
 
-          <Button variant="link" onClick={() => navigate('/products/create')} className='text-sm font-medium underline underline-offset-4'>
+          <Button variant="link" onClick={() => navigate('/seller/create-product')} className='text-sm font-medium underline underline-offset-4'>
             Add a new product
           </Button>
         </div>

@@ -142,7 +142,7 @@ export default function CreateProduct() {
 
           <Button
             variant="link"
-            onClick={() => navigate("/products")}
+            onClick={() => navigate("/seller/dashboard")}
             className="text-sm font-medium underline underline-offset-4"
           >
             View listed products
