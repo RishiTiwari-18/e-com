@@ -28,7 +28,11 @@ function LoginPage() {
         const registeredUser = await handleLogin(data)
         toast.success(registeredUser.message || 'Login successful')
         console.log(registeredUser)
-        navigate('/')
+        if(registeredUser.user.role === 'seller') {
+          navigate('/seller/dashboard')
+        } else {
+          navigate('/')
+        }
     } catch (error) {
         toast.error(error.message || 'Login failed')
         console.log(error)

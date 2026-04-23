@@ -5,7 +5,17 @@ export const createProduct = async (productData) => {
     return response.data
 }
 
-export const getProducts = async () => {
+export const getSellerProducts = async () => {
     const response = await api.get('/products/seller')
+    return response.data
+}
+
+export const getAllProducts = async () => {
+    const response = await api.get('/products')
+    return response.data
+}
+
+export const getProductById = async (id) => {
+    const response = await api.get(`/products/${id}`)
     return response.data
 }

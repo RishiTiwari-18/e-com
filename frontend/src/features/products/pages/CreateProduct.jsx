@@ -15,6 +15,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
+import Heading from "@/components/heading";
 
 const MAX_IMAGES = 7;
 
@@ -121,7 +122,7 @@ export default function CreateProduct() {
 
       await handleCreateProduct(formData);
       toast.success("Product created successfully");
-      navigate("/products");
+      navigate("/seller/dashboard");
     } catch (error) {
       toast.error(error.message || "Failed to create product");
     }
@@ -129,15 +130,13 @@ export default function CreateProduct() {
 
   return (
     <main className="min-h-screen px-6 py-10 text-stone-900">
-      <section className="mx-auto w-full max-w-7xl space-y-10">
+      <section className="mx-auto w-full max-w-6xl space-y-10">
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-          <div className="space-y-6">
+          <div className="space-y-8">
             <p className="text-xs font-semibold uppercase tracking-[0.35em] text-stone-500">
               Create listing
             </p>
-            <h1 className="max-w-3xl text-3xl font-semibold tracking-tight md:text-4xl">
-              Add a new product
-            </h1>
+            <Heading>Add a new product </Heading>
           </div>
 
           <Button
