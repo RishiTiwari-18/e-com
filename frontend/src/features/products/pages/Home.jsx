@@ -30,7 +30,7 @@ export default function Home() {
     <main className='min-h-screen bg-background text-stone-900'>
         <Header/>
 
-      <section className='mx-auto w-full max-w-7xl space-y-12 px-6 py-10'>
+      <section className='mx-auto w-full max-w-6xl space-y-12 px-6 py-10'>
         <div className='relative overflow-hidden rounded-2xl border border-border/60 bg-linear-to-r from-secondary/25 via-background to-accent/20 p-8 md:p-12'>
           <p className='mb-4 text-xs font-semibold uppercase tracking-[0.35em] text-stone-600'>Shop everything</p>
           <Heading>Explore products picked for you</Heading>

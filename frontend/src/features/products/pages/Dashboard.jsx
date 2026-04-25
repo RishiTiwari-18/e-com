@@ -7,6 +7,7 @@ import useProduct from '../hooks/useProduct'
 import { Button } from '@/components/ui/button'
 import Heading from '@/components/heading'
 import ProductCard from '../components/ProductCard'
+import Header from '../components/Header'
 
 
 export default function Dashboard() {
@@ -27,8 +28,9 @@ export default function Dashboard() {
   }, [])
 
   return (
-    <main className='min-h-screen px-6 py-10 text-stone-900'>
-      <section className='mx-auto w-full max-w-6xl space-y-10'>
+    <main className='min-h-screen  text-stone-900'>
+      <Header/>
+      <section className='px-6 py-10 mx-auto w-full max-w-6xl space-y-10'>
         <div className='flex flex-col gap-4 mb-20 md:flex-row md:items-end md:justify-between'>
           <div className='space-y-8'>
             <p className='text-xs font-semibold uppercase tracking-[0.35em] text-stone-500'>Product catalog</p>

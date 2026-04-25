@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import Heading from "@/components/heading";
+import Header from "../components/Header";
 
 const MAX_IMAGES = 7;
 
@@ -129,8 +130,9 @@ export default function CreateProduct() {
   };
 
   return (
-    <main className="min-h-screen px-6 py-10 text-stone-900">
-      <section className="mx-auto w-full max-w-6xl space-y-10">
+    <main className="min-h-screen  text-stone-900">
+      <Header/>
+      <section className="mx-auto px-6 py-10 w-full max-w-6xl space-y-10">
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div className="space-y-8">
             <p className="text-xs font-semibold uppercase tracking-[0.35em] text-stone-500">
