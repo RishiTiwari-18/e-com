@@ -19,3 +19,8 @@ export const getProductById = async (id) => {
     const response = await api.get(`/products/${id}`)
     return response.data
 }
+
+export const getHomePageProducts = async () => {
+    const response = await api.get('/products/home')
+    return response.data
+}

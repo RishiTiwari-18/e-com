@@ -1,5 +1,5 @@
 import { useCallback, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
 import { UploadCloud, X } from "lucide-react";
 import { toast } from "sonner";
@@ -17,6 +17,14 @@ import {
 import { Button } from "@/components/ui/button";
 import Heading from "@/components/heading";
 import Header from "../components/Header";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb"
 
 const MAX_IMAGES = 7;
 
@@ -130,15 +138,27 @@ export default function CreateProduct() {
   };
 
   return (
-    <main className="min-h-screen  text-stone-900">
-      <Header/>
-      <section className="mx-auto px-6 py-10 w-full max-w-6xl space-y-10">
+    <main className="min-h-screen">
+      <Header />
+      <section className="mx-auto px-8 py-10 w-full  space-y-10">
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-          <div className="space-y-8">
-            <p className="text-xs font-semibold uppercase tracking-[0.35em] text-stone-500">
-              Create listing
-            </p>
-            <Heading>Add a new product </Heading>
+          <div className="space-y-4">
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem>
+                  <BreadcrumbLink render={<Link to="/" />}>Home</BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <BreadcrumbLink render={<Link to="/seller/dashboard" />}>Dashboard</BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <BreadcrumbPage>Create Product</BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
+            <Heading>Add new product </Heading>
           </div>
 
           <Button
@@ -213,36 +233,22 @@ export default function CreateProduct() {
               <div className="space-y-3">
                 <Label
                   className="block text-xs font-semibold uppercase tracking-[0.25em] text-stone-500"
-                  htmlFor="currency"
+                  htmlFor="units"
                 >
-                  Currency
+                  Units
                 </Label>
-                <Controller
-                  name="currency"
-                  control={control}
-                  render={({ field }) => (
-                    <Select value={field.value} onValueChange={field.onChange}>
-                      <SelectTrigger
-                        id="currency"
-                        className="w-full h-10"
-                        size="lg"
-                      >
-                        <SelectValue placeholder="Select currency" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {CURRENCIES.map((code) => (
-                          <SelectItem
-                            key={code}
-                            className="min-h-10 py-2.5"
-                            value={code}
-                          >
-                            {code}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  )}
+                  <Input
+                  id="units"
+                  type="number"
+                  min="0"
+                  placeholder="10"
+                  {...register("units", {
+                    required: "Units is required",
+                    validate: (value) =>
+                      Number(value) >= 0 || "Units must be non-negative",
+                  })}
                 />
+                <FieldError error={errors.units} />
               </div>
             </div>
           </div>
@@ -320,10 +326,7 @@ export default function CreateProduct() {
             </div>
           </div>
 
-          <Button
-            type="submit"
-            className="order-3 w-full lg:col-start-1"
-          >
+          <Button type="submit" className="order-3 w-full lg:col-start-1">
             {isSubmitting ? "Creating..." : "Create Product"}
           </Button>
         </form>

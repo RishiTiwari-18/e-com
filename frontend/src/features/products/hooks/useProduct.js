@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import { setAllProducts, setLoading, setSellerProducts } from "../state/product.slice";
-import { createProduct, getAllProducts, getProductById, getSellerProducts } from "../services/products.api";
+import { createProduct, getAllProducts, getHomePageProducts, getProductById, getSellerProducts } from "../services/products.api";
 
 const useProduct = () => {
     const dispatch = useDispatch();
@@ -57,8 +57,20 @@ const useProduct = () => {
         }
     }
 
+    const handleGetHomePageProducts = async () => {
+        try {
+            dispatch(setLoading(true));
+            const response = await getHomePageProducts();
+            dispatch(setAllProducts(response.products));
+        } catch (error) {
+            const message = error?.response?.data?.error || 'Failed to fetch home page products'
+            throw new Error(message)
+        } finally {
+            dispatch(setLoading(false));
+        }
+    }
 
-    return { handleCreateProduct, handleGetSellerProducts, handleGetAllProducts, handleGetProductById };
+    return { handleCreateProduct, handleGetSellerProducts, handleGetAllProducts, handleGetProductById, handleGetHomePageProducts };
 }
 
 export default useProduct;

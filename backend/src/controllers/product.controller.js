@@ -30,13 +30,18 @@ export const createProduct = async (req, res) => {
 export const getSellerProducts = async (req, res) => {
     const user = req.user;
 
-    const products = await productModel.find({ seller: user.id });
+    const products = await productModel.find({ seller: user.id }).sort({ createdAt: -1 });
 
     res.status(200).json({ success: true, products});
 }
 
 export const getProducts = async (req, res) => {
-    const products = await productModel.find()
+    const products = await productModel.find().sort({ createdAt: -1 });
+    res.status(200).json({ success: true, products});
+}
+
+export const getHomePageProducts = async (req, res) => {
+    const products = await productModel.find().limit(4).sort({ createdAt: -1 });
     res.status(200).json({ success: true, products});
 }
 

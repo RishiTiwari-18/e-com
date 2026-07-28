@@ -1,7 +1,7 @@
 import { Router } from "express"
 import { isSeller } from "../middlewares/role.middleware.js"
 import asyncHandler from "../middlewares/asyncHandler.js"
-import { createProduct, getProducts, getSellerProducts, getSingleProduct } from "../controllers/product.controller.js"
+import { createProduct, getHomePageProducts, getProducts, getSellerProducts, getSingleProduct } from "../controllers/product.controller.js"
 import authUser from "../middlewares/auth.middleware.js"
 import multer from "multer"
 import { validateCreateProduct } from "../validation/product.validator.js"
@@ -14,8 +14,11 @@ productRouter.post("/", authUser, isSeller, upload.array("images", 7), validateC
 
 productRouter.get("/seller", authUser, isSeller, asyncHandler(getSellerProducts))
 
+productRouter.get("/home", asyncHandler(getHomePageProducts))
+
 productRouter.get("/", asyncHandler(getProducts))
 
 productRouter.get("/:id", asyncHandler(getSingleProduct))
+
 
 export default productRouter
