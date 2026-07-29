@@ -21,4 +21,5 @@ productRouter.get("/", asyncHandler(getProducts))
 productRouter.get("/:id", asyncHandler(getSingleProduct))
 
 
+
 export default productRouter

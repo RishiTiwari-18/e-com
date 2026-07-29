@@ -31,12 +31,12 @@ export default function Home() {
       <Header />
 
       <section className="mx-auto w-full">
-        <div className="w-full py-20 px-8">
+        <div className="w-full py-20 px-4 md:px-8">
           <Logo />
         </div>
 
         <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-          <div className="space-y-2  border-r border-y border-border p-8">
+          <div className="space-y-2  border-r border-y border-border px-4 py-6 md:p-8">
             <h3 className="text-sm font-mono text-primary uppercase tracking-wide">
               Outfit
             </h3>
@@ -45,16 +45,16 @@ export default function Home() {
               celebrates our collective creativity and passion for apparel.
             </p>
           </div>
-          <div className="space-y-2 border-r border-y flex flex-col justify-between border-border p-8">
+          <div className="space-y-2 border-r border-y flex flex-col justify-between border-border px-4 py-6 md:p-8">
             <h3 className="text-sm font-mono text-primary uppercase tracking-wide">
               Why
             </h3>
-            <p className="text-base border-t border-border leading-relaxed">
+            <p className="text-base lg:border-t border-border leading-relaxed">
               Carefully designed for those who appreciate the intersection of
               typography and utility.
             </p>
           </div>
-          <div className="space-y-2 border-r border-y flex flex-col justify-between border-border p-8">
+          <div className="space-y-2 border-r border-y flex flex-col justify-between border-border px-4 py-6 md:p-8">
             <h3 className="text-sm font-mono text-primary uppercase tracking-wide">
               Visit our website
             </h3>
@@ -65,7 +65,7 @@ export default function Home() {
               www.hellohello.is
             </a>
           </div>
-          <div className="space-y-2 border-y flex flex-col justify-between border-border p-8">
+          <div className="space-y-2 border-y flex flex-col justify-between border-border px-4 py-6 md:p-8">
             <h3 className="text-sm font-mono text-primary uppercase tracking-wide">
               © 2024
             </h3>
@@ -73,21 +73,23 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="grid h-170 grid-cols-2">
-          <div className="overflow-hidden border-r border-border">
+        <div className="flex flex-col lg:flex-row w-full">
+          <div className="overflow-hidden w-full lg:w-1/2 lg:border-r border-border">
             <img
               src="./images/image.png"
-              className="h-full w-full object-cover"
+              className="h-full min-h-70 w-full object-cover"
               alt=""
             />
           </div>
-          <div className="px-20 flex flex-col justify-center border-stone-700">
-            <p className=" text-primary font-mono">NEW ARRIVAL</p>
-            <h1 className="text-[5.5rem] font-roboto-condensed leading-20 uppercase font-bold">
+          <div className="px-4 py-6 sm:px-10 md:px-14 lg:px-20 lg:py-10 flex flex-col w-full lg:w-1/2 justify-center border-stone-700">
+            <p className="text-primary font-mono text-sm sm:text-base">
+              NEW ARRIVAL
+            </p>
+            <h1 className="text-4xl sm:text-5xl lg:text-[5.5rem] font-roboto-condensed leading-tight sm:leading-[1.1] lg:leading-20 uppercase font-bold">
               Made to be worn. Or judged. Or both.
             </h1>
 
-            <p className="mt-10 max-w-xl">
+            <p className="mt-6 sm:mt-8 lg:mt-10 max-w-xl text-sm sm:text-base">
               Our signature metallic tote, designed to reflect the environment
               while maintaining a rigid structural grid. Built for the creative
               operative.
@@ -95,19 +97,19 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="h-24 border border-border flex items-center p-8 justify-between">
+        <div className="h-24 border border-border flex items-center p-4 justify-between">
           <h2 className="text-2xl font-roboto-condensed font-bold ">
             Our Collection
           </h2>
           <Button variant="link">View Collection</Button>
         </div>
 
-        <div className="grid grid-cols-4">
-          {products.length > 0 ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+          {products?.length > 0 ? (
             products.map((product) => (
                 <Link
                   to={`/products/${product._id}`}
-                  className="flex h-full border-r-[0.5px] border-b-[0.5px] border-border cursor-pointer flex-col overflow-hidden"
+                  className="flex h-full border-r border-b-[0.5px] border-border cursor-pointer flex-col overflow-hidden"
                 >
                 {/* Image Section */}
                 <div className="relative border-b border-border overflow-hidden w-full aspect-4/5 bg-muted">
@@ -141,7 +143,7 @@ export default function Home() {
                   {/* Price at Bottom */}
                   <div className="mt-1">
                     <p className="text-md text-primary uppercase font-mono">
-                      {`Rs.${product.price.amount}`}
+                      {`Rs.${product.price}`}
                     </p>
                   </div>
                 </div>
@@ -154,11 +156,11 @@ export default function Home() {
           )}
         </div>
 
-        <div className="bg-primary mt-20 py-16 px-8">
-          <h2 className="text-6xl mb-8 max-w-3xl font-bold text-white">
+        <div className="bg-primary mt-16 md:mt-20 px-4 py-8 md:py-16 md:px-8">
+          <h2 className="text-4xl  md:text-5xl lg:text-6xl mb-4 md:mb-8 max-w-3xl font-bold text-white">
             Collective creativity for high-end creative minds.
           </h2>
-          <p className="mt-4 max-w-2xl text-white">
+          <p className=" max-w-2xl text-white">
             Every piece in the OUTFIT collection is a testament to our design
             philosophy: minimalism without compromise, structural honesty, and a
             relentless pursuit of typographic perfection.

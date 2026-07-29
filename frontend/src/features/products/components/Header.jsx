@@ -21,7 +21,7 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-20 border-b border-border/10 bg-background/90 backdrop-blur">
-      <div className="mx-auto flex h-16 w-full items-center justify-between px-8">
+      <div className="mx-auto flex h-16 w-full items-center justify-between px-4 md:px-8">
         <Link to="/" className="font-newsreader text-primary text-xl  ">
           <svg
             width="3.375em"
@@ -47,9 +47,6 @@ export default function Header() {
         <nav className="flex items-center gap-2">
           {user ? (
             <>
-              <span className="hidden text-sm text-muted-foreground sm:block">
-                Hi, {user?.fullname || "User"}
-              </span>
               <DropdownMenu>
                 <DropdownMenuTrigger
                   render={

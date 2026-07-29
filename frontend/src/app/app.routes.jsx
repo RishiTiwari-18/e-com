@@ -8,6 +8,7 @@ import ProductDetail from "@/features/products/pages/ProductDetail.jsx";
 import UnauthorizedPage from "@/features/system/pages/UnauthorizedPage.jsx";
 import NotFoundPage from "@/features/system/pages/NotFoundPage.jsx";
 import Home from "@/features/products/pages/Home.jsx";
+import CollectionPage from "@/features/products/pages/CollectionPage.jsx";
 
 const routes = createBrowserRouter([
   // Public routes
@@ -26,6 +27,10 @@ const routes = createBrowserRouter([
   {
     path: "/products/:id",
     element: <ProductDetail />,
+  },
+  {
+    path: "/collections/:id",
+    element: <CollectionPage />,
   },
 
 //   // Protected Routes ( any logged in user can access these routes )

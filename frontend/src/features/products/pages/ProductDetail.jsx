@@ -8,6 +8,7 @@ import Header from "../components/Header";
 import { ArrowUpRight, MoveLeft } from "lucide-react";
 import { CounterButton } from "@/components/counter-button";
 import Footer from "../components/Footer";
+import SizeSelector from "../components/SizeSelector";
 
 export default function ProductDetail() {
   const { id } = useParams();
@@ -39,6 +40,8 @@ export default function ProductDetail() {
     );
   }
 
+  console.log(product)
+
   if (!product) {
     return (
       <main className="min-h-screen bg-background px-6 py-12 text-foreground">
@@ -60,11 +63,11 @@ export default function ProductDetail() {
   const images = product.images?.length ? product.images : [];
 
   return (
-    <main className="min-h-screen bg-background text-foreground">
+    <main className="min-h-screen bg-background ">
       <Header />
-      <section className="grid w-full px-8 gap-6  py-12 lg:grid-cols-2">
-        <div className="flex items-start gap-4 ">
-          <div className="w-full min-w-0 space-y-5 overflow-hidden ">
+      <section className="grid w-full px-4 md:px-8 gap-6  py-12 lg:grid-cols-2">
+        <div>
+          <div className="w-full max-lg:flex max-lg:gap-4 no-scrollbar max-lg:overflow-x-auto min-w-0 space-y-5 overflow-hidden ">
             {images.length > 0 ? (
               images.map((image, index) => (
                 <img
@@ -94,13 +97,17 @@ export default function ProductDetail() {
             </h1>
 
             <div>
-              <p className=" text-5xl font-semibold font-mono text-primary ">{`Rs.${product.price.amount}`}</p>
+              <p className=" text-5xl font-semibold font-mono text-primary ">{`Rs.${product.price}`}</p>
             </div>
 
             <div>
               <p className=" text-xl">
                 {product.description}
               </p>
+            </div>
+
+            <div className="pt-3 w-full ">
+              <SizeSelector/>
             </div>
 
             <div className="border-t-2 pt-8 w-full border-primary ">

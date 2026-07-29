@@ -2,23 +2,17 @@ import { useNavigate } from "react-router-dom";
 
 function formatPrice(price) {
   if (!price) return "—";
-  return `Rs.${price.amount}`;
+  return `Rs.${price}`;
 }
 
 export default function ProductCard({ product }) {
   const navigate = useNavigate();
-  const images = product.images?.length ? product.images : [];
 
   const handleCardClick = (event) => {
-    const clickedCarouselControl = event.target.closest(
-      '[data-slot="carousel-previous"], [data-slot="carousel-next"]',
-    );
-
-    if (clickedCarouselControl) return;
-
     navigate(`/products/${product._id}`);
   };
-  console.log(images);
+
+  console.log(product)
 
   return (
     <div

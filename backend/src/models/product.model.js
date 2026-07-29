@@ -1,32 +1,5 @@
 import mongoose from "mongoose";
 
-const variantSchema = new mongoose.Schema({
-    images: [String],
-    // price: {
-    //     amount: {
-    //         type: Number,
-    //         required: [true, 'Product price is required'],
-    //         min: [0, 'Price must be a positive number'],
-    //     },
-    //     currency: {
-    //         type: String,
-    //         enum: ['USD', 'EUR', 'GBP', 'INR', 'JPY'],
-    //         default: 'INR',
-    //     }
-    // },
-    attributes: {
-        type: Map,
-        of: String,
-    },
-    stock: {
-        type: Number,
-        default: 0,
-        min: [0, 'Stock must be a positive number'],
-    }
-},{
-    _id: true
-});
-
 const productSchema = new mongoose.Schema({
     title: {
         type: String,
@@ -39,16 +12,9 @@ const productSchema = new mongoose.Schema({
         trim: true,
     },
     price: {
-        amount: {
-            type: Number,
-            required: [true, 'Product price is required'],
-            min: [0, 'Price must be a positive number'],
-        },
-        currency: {
-            type: String,
-            enum: ['USD', 'EUR', 'GBP', 'INR', 'JPY'], // Add more currencies as needed
-            default: 'INR',
-        }
+        type: Number,
+        required: [true, 'Product price is required'],
+        min: [0, 'Price must be a positive number'],
     },
     images: [{
         type: String,
@@ -59,7 +25,16 @@ const productSchema = new mongoose.Schema({
         ref: 'User',
         required: [true, 'Product seller is required'],
     },
-    variants: [variantSchema],
+    units: {
+        type: Number,
+        default: 0,
+        min: [0, 'Units must be a positive number'],
+    },
+    category: {
+        type: String,
+        required: [true, 'Product category is required'],
+        trim: true,
+    },
 }, {
     timestamps: true
 });

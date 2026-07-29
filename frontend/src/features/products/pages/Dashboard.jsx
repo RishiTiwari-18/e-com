@@ -51,7 +51,7 @@ export default function Dashboard() {
                 </BreadcrumbItem>
               </BreadcrumbList>
             </Breadcrumb>
-            <Heading>All products</Heading>
+            <Heading>Your products</Heading>
           </div>
 
           <Button
