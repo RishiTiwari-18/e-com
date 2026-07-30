@@ -29,7 +29,7 @@ const routes = createBrowserRouter([
     element: <ProductDetail />,
   },
   {
-    path: "/collections/:id",
+    path: "/collections",
     element: <CollectionPage />,
   },
 

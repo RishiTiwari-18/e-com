@@ -4,7 +4,7 @@ import AppError from "../utils/appError.js";
 
 export const createProduct = async (req, res) => {
 
-    const { title, description, amount, currency} = req.body;
+    const { title, description, price, units, category } = req.body;
     const user = req.user;
 
     const images = await Promise.all(req.files.map(async (file) => {
@@ -15,10 +15,9 @@ export const createProduct = async (req, res) => {
     const product = await productModel.create({
         title,
         description,
-        price: {
-            amount,
-            currency:currency || 'INR'
-        },
+        price: Number(price),
+        units: Number(units ?? 0),
+        category,
         images,
         seller: user.id
     });

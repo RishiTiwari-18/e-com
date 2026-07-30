@@ -2,22 +2,25 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import React from "react";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Moon, ShoppingBag, Sun } from "lucide-react";
+import { useTheme } from "next-themes";
 
 export default function Header() {
   const user = useSelector((state) => state.auth.user);
-  const profileHref = user?.role === "seller" ? "/seller/dashboard" : "/";
   const avatarSrc = user?.avatar || "";
   const userName = user?.fullname || "User";
   const userInitial = userName.trim().charAt(0).toUpperCase();
+  const location = useLocation();
+  const { theme, setTheme } = useTheme();
+
 
   return (
     <header className="sticky top-0 z-20 border-b border-border/10 bg-background/90 backdrop-blur">
@@ -44,7 +47,25 @@ export default function Header() {
           </svg>
         </Link>
 
-        <nav className="flex items-center gap-2">
+
+        <nav className="flex items-center gap-4">
+          <Link to="/collections" className={`text-xl font-medium ${location.pathname === "/collections" && "underline"} text-primary duration-300 mr-4`}>
+            Shop
+          </Link>
+
+          <Link to="/bag" >
+            <ShoppingBag className="size-5 hover:text-muted-foreground" />
+          </Link>
+
+          <Button
+            variant="icon"
+            size="icon"
+            className=" hover:text-muted-foreground"
+            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+          >
+            {theme === "dark" ? <Sun className="size-5" /> : <Moon className="size-5" />}
+          </Button>
+
           {user ? (
             <>
               <DropdownMenu>
@@ -70,7 +91,10 @@ export default function Header() {
                   </DropdownMenuGroup>
                   {/* <DropdownMenuSeparator /> */}
                   <DropdownMenuGroup>
-                    <DropdownMenuItem className="text-destructive-foreground! mt-2" variant="destructive">
+                    <DropdownMenuItem
+                      className="text-destructive-foreground! mt-2"
+                      variant="destructive"
+                    >
                       Log out
                     </DropdownMenuItem>
                   </DropdownMenuGroup>

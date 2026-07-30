@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import useProduct from "../hooks/useProduct";
 import Header from "../components/Header";
@@ -11,6 +11,7 @@ import Footer from "../components/Footer";
 export default function Home() {
   const { handleGetHomePageProducts } = useProduct();
   const { products, loading } = useSelector((state) => state.products);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const loadProducts = async () => {
@@ -41,7 +42,7 @@ export default function Home() {
               Outfit
             </h3>
             <p className="text-base font-semibold mt-4 leading-relaxed">
-              Created by the +HELLOHELLO team, this store and collection
+              Created by Rishi Tiwari, this store and collection
               celebrates our collective creativity and passion for apparel.
             </p>
           </div>
@@ -55,19 +56,18 @@ export default function Home() {
             </p>
           </div>
           <div className="space-y-2 border-r border-y flex flex-col justify-between border-border px-4 py-6 md:p-8">
-            <h3 className="text-sm font-mono text-primary uppercase tracking-wide">
-              Visit our website
+            <h3 className="text-sm font-mono uppercase tracking-wide">
+              View our collection
             </h3>
-            <a
-              href="https://www.hellohello.is"
-              className="text-md  hover:text-foreground underline"
-            >
-              www.hellohello.is
-            </a>
+            <Link to="/collections">
+              <Button variant="link" className="text-sm p-0 font-medium underline underline-offset-4">
+                View Collection
+              </Button>
+            </Link>
           </div>
           <div className="space-y-2 border-y flex flex-col justify-between border-border px-4 py-6 md:p-8">
             <h3 className="text-sm font-mono text-primary uppercase tracking-wide">
-              © 2024
+              © {new Date().getFullYear()} Outfit
             </h3>
             <p>SHIPPING & RETURNS</p>
           </div>
@@ -101,7 +101,9 @@ export default function Home() {
           <h2 className="text-2xl font-roboto-condensed font-bold ">
             Our Collection
           </h2>
-          <Button variant="link">View Collection</Button>
+          <Button variant="link" onClick={() => navigate("/collections")}>
+            View Collection
+          </Button>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">

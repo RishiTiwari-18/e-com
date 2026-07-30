@@ -40,7 +40,6 @@ export default function ProductDetail() {
     );
   }
 
-  console.log(product)
 
   if (!product) {
     return (

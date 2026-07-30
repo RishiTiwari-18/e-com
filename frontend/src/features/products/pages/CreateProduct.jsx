@@ -28,11 +28,10 @@ import {
 
 const MAX_IMAGES = 7;
 
-const CURRENCIES = ["INR", "USD", "EUR", "GBP", "JPY"];
 
 function FieldError({ error }) {
   if (!error) return null;
-  return <p className="text-xs text-destructive">{error.message}</p>;
+  return <p className="text-xs text-primary">{error.message}</p>;
 }
 
 export default function CreateProduct() {
@@ -52,8 +51,9 @@ export default function CreateProduct() {
     defaultValues: {
       title: "",
       description: "",
-      amount: "",
-      currency: "INR",
+      price: null,
+      units: null,
+      category: "",
     },
   });
 
@@ -125,8 +125,9 @@ export default function CreateProduct() {
       const formData = new FormData();
       formData.append("title", values.title);
       formData.append("description", values.description);
-      formData.append("amount", values.amount);
-      formData.append("currency", values.currency);
+      formData.append("price", values.price);
+      formData.append("units", values.units);
+      formData.append("category", values.category);
       imageEntries.forEach((entry) => formData.append("images", entry.file));
 
       await handleCreateProduct(formData);
@@ -208,29 +209,29 @@ export default function CreateProduct() {
               <FieldError error={errors.description} />
             </div>
 
-            <div className="grid gap-6 sm:grid-cols-2">
+            <div className="grid gap-6 sm:grid-cols-3">
               <div className="space-y-2">
                 <Label
                   className="block text-xs font-semibold uppercase tracking-[0.25em] text-stone-500"
-                  htmlFor="amount"
+                  htmlFor="price"
                 >
                   Price
                 </Label>
                 <Input
-                  id="amount"
+                  id="price"
                   type="number"
                   min="0"
                   placeholder="999"
-                  {...register("amount", {
-                    required: "Amount is required",
+                  {...register("price", {
+                    required: "Price is required",
                     validate: (value) =>
-                      Number(value) >= 0 || "Amount must be non-negative",
+                      Number(value) >= 0 || "Price must be non-negative",
                   })}
                 />
-                <FieldError error={errors.amount} />
+                <FieldError error={errors.price} />
               </div>
 
-              <div className="space-y-3">
+              <div className="space-y-2">
                 <Label
                   className="block text-xs font-semibold uppercase tracking-[0.25em] text-stone-500"
                   htmlFor="units"
@@ -250,6 +251,38 @@ export default function CreateProduct() {
                 />
                 <FieldError error={errors.units} />
               </div>
+              <div className="space-y-2">
+                <Label
+                  className="block text-xs font-semibold uppercase tracking-[0.25em] text-stone-500"
+                  htmlFor="category"
+                >
+                  Category
+                </Label>
+                <Controller
+                  name="category"
+                  control={control}
+                  rules={{ required: "Category is required" }}
+                  render={({ field }) => (
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <SelectTrigger className="w-full h-10! mb-0!">
+                        <SelectValue placeholder="Select a category" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="tshirt">T-Shirt</SelectItem>
+                        <SelectItem value="sweatshirt">Sweatshirt</SelectItem>
+                        <SelectItem value="cap">Cap</SelectItem>
+                        <SelectItem value="cargo">Cargo</SelectItem>
+                        <SelectItem value="hoodie">Hoodie</SelectItem>
+                        <SelectItem value="jacket">Jacket</SelectItem>
+                        <SelectItem value="jeans">Jeans</SelectItem>
+                        <SelectItem value="shorts">Shorts</SelectItem>
+                        <SelectItem value="shoes">Shoes</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  )}
+                />
+                <FieldError error={errors.category} />
+              </div>
             </div>
           </div>
 
@@ -267,8 +300,8 @@ export default function CreateProduct() {
               onDrop={handleDrop}
               className={`flex min-h-72 cursor-pointer flex-col justify-center gap-4 rounded-lg border-2 border-dashed p-4 text-center outline-none transition-colors ${
                 dragActive
-                  ? "border-stone-900 bg-stone-50 text-stone-900"
-                  : "border-stone-300 text-stone-500"
+                  ? "border-ring bg-input/30 text-foreground shadow-sm ring-3 ring-ring/20"
+                  : "border-input text-muted-foreground"
               }`}
             >
               <input

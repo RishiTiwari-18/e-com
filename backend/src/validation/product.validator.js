@@ -16,11 +16,16 @@ export const validateCreateProduct = [
     body('description')
         .notEmpty()
         .withMessage('Product description is required'),
-    body('amount')
+    body('price')
         .isNumeric()
-        .withMessage('Product amount must be a number'),
-    body('currency')
-        .isIn(['USD', 'EUR', 'GBP', 'INR', 'JPY'])
-        .withMessage('Invalid currency'),
+        .withMessage('Product price must be a number'),
+    body('units')
+        .notEmpty()
+        .withMessage('Product units is required')
+        .isNumeric()
+        .withMessage('Product units must be a number'),
+    body('category')
+        .notEmpty()
+        .withMessage('Product category is required'),
     validateRequest
 ];

@@ -27,14 +27,19 @@ const productSchema = new mongoose.Schema({
     },
     units: {
         type: Number,
+        required: [true, 'Product units is required'],
         default: 0,
         min: [0, 'Units must be a positive number'],
     },
     category: {
         type: String,
+        enum: {
+            values: ['tshirt', 'sweatshirt', 'cap', 'cargo', 'hoodie', 'jacket', 'jeans', 'shorts', 'shoes'],
+            message: 'Invalid product category'
+        },
         required: [true, 'Product category is required'],
-        trim: true,
     },
+
 }, {
     timestamps: true
 });

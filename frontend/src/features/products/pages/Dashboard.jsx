@@ -7,6 +7,7 @@ import useProduct from "../hooks/useProduct";
 import { Button } from "@/components/ui/button";
 import Heading from "@/components/heading";
 import ProductCard from "../components/ProductCard";
+
 import Header from "../components/Header";
 import {
   Breadcrumb,
@@ -18,14 +19,41 @@ import {
 } from "@/components/ui/breadcrumb";
 
 export default function Dashboard() {
-  const { handleGetSellerProducts } = useProduct();
+  const { handleGetAllProducts } = useProduct();
   const { sellerProducts, loading } = useSelector((state) => state.products);
   const navigate = useNavigate();
+
+  const fakeProducts = [
+    {
+      id: "PRD-1001",
+      title: "Wireless Mouse",
+      price: 29.99,
+      inventory: 42,
+      status: "Active",
+    },
+    {
+      id: "PRD-1002",
+      title: "Mechanical Keyboard",
+      price: 89.0,
+      inventory: 18,
+      status: "Low Stock",
+    },
+    {
+      id: "PRD-1003",
+      title: "USB-C Hub",
+      price: 49.5,
+      inventory: 0,
+      status: "Out of Stock",
+    },
+  ];
+
+  const productsToDisplay =
+    sellerProducts?.length > 0 ? sellerProducts : fakeProducts;
 
   useEffect(() => {
     const loadProducts = async () => {
       try {
-        await handleGetSellerProducts();
+        await handleGetAllProducts();
       } catch (error) {
         toast.error(error.message || "Failed to load products");
       }
@@ -37,8 +65,8 @@ export default function Dashboard() {
   return (
     <main className="min-h-screen">
       <Header />
-      <section className="px-8 py-10 w-full space-y-10">
-        <div className="flex flex-col gap-4 mb-20 md:flex-row md:items-end md:justify-between">
+      <section className=" py-10 w-full space-y-10">
+        <div className="flex px-4 md:px-8 flex-col gap-4 mb-20 md:flex-row md:items-end md:justify-between">
           <div className="space-y-4">
             <Breadcrumb>
               <BreadcrumbList>
@@ -67,20 +95,37 @@ export default function Dashboard() {
           <div className="flex min-h-72 items-center justify-center">
             <Spinner />
           </div>
-        ) : sellerProducts.length === 0 ? (
-          <div className="space-y-4 py-12">
-            <p className="text-lg font-medium text-stone-900">
-              No products yet.
-            </p>
-            <p className="text-sm text-stone-500">
-              Once you create a product it will show up here.
-            </p>
-          </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {sellerProducts.map((product) => (
-              <ProductCard key={product._id} product={product} />
-            ))}
+          <div className="overflow-x-auto rounded-lg border border-stone-200">
+            <table className="min-w-full text-sm">
+              <thead className="bg-stone-100 text-left">
+                <tr>
+                  <th className="px-4 py-3 font-medium text-stone-700">Product</th>
+                  <th className="px-4 py-3 font-medium text-stone-700">ID</th>
+                  <th className="px-4 py-3 font-medium text-stone-700">Price</th>
+                  <th className="px-4 py-3 font-medium text-stone-700">Inventory</th>
+                  <th className="px-4 py-3 font-medium text-stone-700">Status</th>
+                  <th className="px-4 py-3 font-medium text-stone-700">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {productsToDisplay.map((product) => (
+                  <tr key={product.id} className="border-t border-stone-200">
+                    <td className="px-4 py-3 text-stone-900">{product.title}</td>
+                    <td className="px-4 py-3 text-stone-600">{product.id}</td>
+                    <td className="px-4 py-3 text-stone-900">${Number(product.price).toFixed(2)}</td>
+                    <td className="px-4 py-3 text-stone-900">{product.inventory ?? 0}</td>
+                    <td className="px-4 py-3 text-stone-700">{product.status || "Active"}</td>
+                    <td className="px-4 py-3">
+                      <div className="flex items-center gap-3">
+                        <button className="text-blue-600 hover:underline">Edit</button>
+                        <button className="text-red-600 hover:underline">Delete</button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         )}
       </section>

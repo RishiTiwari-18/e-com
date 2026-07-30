@@ -12,7 +12,6 @@ export default function ProductCard({ product }) {
     navigate(`/products/${product._id}`);
   };
 
-  console.log(product)
 
   return (
     <div
