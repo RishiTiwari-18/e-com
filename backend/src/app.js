@@ -35,7 +35,7 @@ passport.use(new GoogleStrategy({
 
 app.use("/api/auth", authRouter)
 app.use("/api/products", productRouter)
-app.use("/api/carts", cartRouter)
+app.use("/api/cart", cartRouter)
 
 app.use(notFound)
 app.use(errorHandler)

@@ -16,6 +16,8 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { Card } from "@/components/ui/card";
+import CardSkeleton from "../components/CardSkeleton";
 
 export default function CollectionPage() {
   const { handleGetSellerProducts } = useProduct();
@@ -55,8 +57,12 @@ export default function CollectionPage() {
         </div>
 
         {loading ? (
-          <div className="flex min-h-72 items-center justify-center">
-            <Spinner />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <CardSkeleton />
+            <CardSkeleton />
+            <CardSkeleton />
+            <CardSkeleton />
+            <CardSkeleton />
           </div>
         ) : sellerProducts.length === 0 ? (
           <div className="space-y-4 py-12">

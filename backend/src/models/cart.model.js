@@ -4,7 +4,7 @@ const cartSchema = new mongoose.Schema({
         ref: 'User',
         required: [true, 'Cart user is required'],
     },
-    products: [{
+    items: [{
         product: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Product',
@@ -13,20 +13,24 @@ const cartSchema = new mongoose.Schema({
         quantity: {
             type: Number,
             required: [true, 'Product quantity is required'],
+            default: 1,
             min: [1, 'Quantity must be at least 1'],
         },
-        size: {
-            type: String,
-            enum: {
-                values: ['S', 'M', 'L', 'XL', 'XXL'],
-                message: 'Invalid product size'
-            },
-            required: [true, 'Product size is required'],
-        }
+        // size: {
+        //     type: String,
+        //     enum: {
+        //         values: ['S', 'M', 'L', 'XL', 'XXL'],
+        //         message: 'Invalid product size'
+        //     },
+        //     required: [true, 'Product size is required'],
+        // }
     }]
 }, {
     timestamps: true
 });
+
+cartSchema.index({ user: 1 });
+
 
 const cartModel = mongoose.model('Cart', cartSchema);
 

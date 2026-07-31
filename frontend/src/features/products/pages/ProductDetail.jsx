@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Spinner } from "@/components/ui/spinner.jsx";
+import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
 import useProduct from "../hooks/useProduct";
 import Header from "../components/Header";
@@ -34,9 +34,32 @@ export default function ProductDetail() {
 
   if (isLoading) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-background">
-        <Spinner />
-      </main>
+      <main className="min-h-screen bg-background ">
+      <Header />
+      <section className="grid h-full w-full px-4 md:px-8 gap-6  py-12 lg:grid-cols-2">
+        <div>
+          <div className="w-full h-120 lg:h-full max-lg:flex max-lg:gap-4 no-scrollbar max-lg:overflow-x-auto min-w-0 space-y-5 overflow-hidden">
+            <Skeleton className="h-full w-full rounded-none" />
+          </div>
+        </div>
+
+        <aside className=" top-28 sticky h-fit ">
+          <Link to="/" className="flex w-fit cursor-pointer items-center text-primary gap-2 text-lg font-medium">
+            <MoveLeft />
+            Return to Shop
+          </Link>
+          <div className="flex flex-col mt-5 gap-6 items-start">
+            <Skeleton className="h-16 w-3/5" />
+            <Skeleton className="h-15 w-1/3" />
+            <Skeleton className="h-8 w-full" />
+            <Skeleton className="h-16 w-full" />
+            <Skeleton className="h-16 w-full" />
+            <Skeleton className="h-16 w-full" />
+          </div>
+        </aside>
+      </section>
+      <Footer />
+    </main>
     );
   }
 

@@ -6,7 +6,6 @@ import { toast } from "sonner";
 import useProduct from "../hooks/useProduct";
 import { Button } from "@/components/ui/button";
 import Heading from "@/components/heading";
-import ProductCard from "../components/ProductCard";
 
 import Header from "../components/Header";
 import {
@@ -96,9 +95,9 @@ export default function Dashboard() {
             <Spinner />
           </div>
         ) : (
-          <div className="overflow-x-auto rounded-lg border border-stone-200">
+          <div className="overflow-x-auto rounded-lg">
             <table className="min-w-full text-sm">
-              <thead className="bg-stone-100 text-left">
+              <thead className=" text-left">
                 <tr>
                   <th className="px-4 py-3 font-medium text-stone-700">Product</th>
                   <th className="px-4 py-3 font-medium text-stone-700">ID</th>
@@ -110,7 +109,7 @@ export default function Dashboard() {
               </thead>
               <tbody>
                 {productsToDisplay.map((product) => (
-                  <tr key={product.id} className="border-t border-stone-200">
+                  <tr key={product.id} className="border-t border">
                     <td className="px-4 py-3 text-stone-900">{product.title}</td>
                     <td className="px-4 py-3 text-stone-600">{product.id}</td>
                     <td className="px-4 py-3 text-stone-900">${Number(product.price).toFixed(2)}</td>

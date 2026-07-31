@@ -12,34 +12,32 @@ export default function ProductCard({ product }) {
     navigate(`/products/${product._id}`);
   };
 
-
   return (
     <div
       className=" flex h-full cursor-pointer flex-col overflow-hidden"
       onClick={handleCardClick}
-
     >
       {/* Image Section */}
-                <div className="relative rounded-xl overflow-hidden w-full aspect-4/5">
-                  {
-                    <div className="absolute">
-                      <img
-                        src={product.images[0]}
-                        alt={product.title}
-                        className="h-full hover:opacity-0  duration-500 ease-in-out w-full object-cover"
-                        loading="lazy"
-                      />
-                    </div>
-                  }
-                  {
-                    <img
-                      src={product.images[1]}
-                      alt={product.title}
-                      className="h-full  w-full object-cover"
-                      loading="lazy"
-                    />
-                  }
-                </div>
+      <div className="relative rounded-xl overflow-hidden w-full aspect-4/5">
+        {
+          <div className="absolute">
+            <img
+              src={product.images[0]}
+              alt={product.title}
+              className="h-full hover:opacity-0  duration-500 ease-in-out w-full object-cover"
+              loading="lazy"
+            />
+          </div>
+        }
+        {
+          <img
+            src={product.images[1]}
+            alt={product.title}
+            className="h-full  w-full object-cover"
+            loading="lazy"
+          />
+        }
+      </div>
 
       {/* Content Section */}
       <div className="flex flex-col py-4">
@@ -47,7 +45,6 @@ export default function ProductCard({ product }) {
         <h3 className="font-roboto-condensed uppercase text-sm font-normal text-foreground overflow-hidden">
           {product.title}
         </h3>
-
 
         {/* Price at Bottom */}
         <div className="mt-1">
