@@ -77,6 +77,7 @@ export default function Home() {
           <div className="overflow-hidden w-full lg:w-1/2 lg:border-r border-border">
             <img
               src="./images/image.png"
+              loading="lazy"
               className="h-full min-h-70 w-full object-cover"
               alt=""
             />

@@ -16,5 +16,8 @@ export const validateCartItem = [
     body('quantity')
         .notEmpty()
         .withMessage('Quantity is required'),
+    body('size')
+        .notEmpty()
+        .withMessage('Product size is required'),
     validateRequest
 ];

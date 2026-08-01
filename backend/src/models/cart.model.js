@@ -1,3 +1,5 @@
+import mongoose from "mongoose"
+
 const cartSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
@@ -16,14 +18,14 @@ const cartSchema = new mongoose.Schema({
             default: 1,
             min: [1, 'Quantity must be at least 1'],
         },
-        // size: {
-        //     type: String,
-        //     enum: {
-        //         values: ['S', 'M', 'L', 'XL', 'XXL'],
-        //         message: 'Invalid product size'
-        //     },
-        //     required: [true, 'Product size is required'],
-        // }
+        size: {
+            type: String,
+            enum: {
+                values: ['S', 'M', 'L', 'XL', 'XXL'],
+                message: 'Invalid product size'
+            },
+            required: [true, 'Product size is required'],
+        }
     }]
 }, {
     timestamps: true

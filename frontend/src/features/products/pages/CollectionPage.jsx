@@ -16,17 +16,16 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { Card } from "@/components/ui/card";
 import CardSkeleton from "../components/CardSkeleton";
 
 export default function CollectionPage() {
-  const { handleGetSellerProducts } = useProduct();
-  const { sellerProducts, loading } = useSelector((state) => state.products);
+  const { handleGetAllProducts } = useProduct();
+  const { products, loading } = useSelector((state) => state.products);
 
   useEffect(() => {
     const loadProducts = async () => {
       try {
-        await handleGetSellerProducts();
+        await handleGetAllProducts();
       } catch (error) {
         toast.error(error.message || "Failed to load products");
       }
@@ -64,7 +63,7 @@ export default function CollectionPage() {
             <CardSkeleton />
             <CardSkeleton />
           </div>
-        ) : sellerProducts.length === 0 ? (
+        ) : products.length === 0 ? (
           <div className="space-y-4 py-12">
             <p className="text-lg font-medium text-stone-900">
               No products yet.
@@ -75,7 +74,7 @@ export default function CollectionPage() {
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {sellerProducts.map((product) => (
+            {products.map((product) => (
               <ProductCard key={product._id} product={product} />
             ))}
           </div>

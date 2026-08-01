@@ -32,6 +32,8 @@ export default function ProductDetail() {
     if (id) loadProduct();
   }, [id]);
 
+  console.log(product)
+
   if (isLoading) {
     return (
       <main className="min-h-screen bg-background ">
@@ -133,7 +135,7 @@ export default function ProductDetail() {
             </div>
 
             <div className="border-t-2 pt-8 w-full border-primary ">
-              <CounterButton/>
+              <CounterButton max={product.units} />
             </div>
 
 

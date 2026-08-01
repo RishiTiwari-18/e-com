@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/breadcrumb";
 
 export default function Dashboard() {
-  const { handleGetAllProducts } = useProduct();
+  const { handleGetSellerProducts } = useProduct();
   const { sellerProducts, loading } = useSelector((state) => state.products);
   const navigate = useNavigate();
 
@@ -52,7 +52,7 @@ export default function Dashboard() {
   useEffect(() => {
     const loadProducts = async () => {
       try {
-        await handleGetAllProducts();
+        await handleGetSellerProducts();
       } catch (error) {
         toast.error(error.message || "Failed to load products");
       }
