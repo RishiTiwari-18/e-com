@@ -63,7 +63,6 @@ export default function Dashboard() {
 
   return (
     <main className="min-h-screen">
-      <Header />
       <section className=" py-10 w-full space-y-10">
         <div className="flex px-4 md:px-8 flex-col gap-4 mb-20 md:flex-row md:items-end md:justify-between">
           <div className="space-y-4">

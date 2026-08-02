@@ -25,14 +25,12 @@ export default function Home() {
     loadProducts();
   }, []);
 
-  console.log(products);
 
   return (
     <main className="min-h-screen bg-background ">
-      <Header />
 
       <section className="mx-auto w-full">
-        <div className="w-full py-20 px-4 md:px-8">
+        <div className="w-full py-10 md:py-20 px-4 md:px-8">
           <Logo />
         </div>
 
@@ -169,8 +167,6 @@ export default function Home() {
             relentless pursuit of typographic perfection.
           </p>
         </div>
-
-        <Footer />
       </section>
     </main>
   );

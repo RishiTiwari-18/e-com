@@ -39,7 +39,13 @@ const productSchema = new mongoose.Schema({
         },
         required: [true, 'Product category is required'],
     },
-
+    size: {
+        type: String,
+        enum: {
+            values: ['S', 'M', 'L', 'XL', 'XXL'],
+            message: 'Invalid product size'
+        },
+    }
 }, {
     timestamps: true
 });

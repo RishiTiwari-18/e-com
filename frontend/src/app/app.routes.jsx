@@ -9,8 +9,57 @@ import UnauthorizedPage from "@/features/system/pages/UnauthorizedPage.jsx";
 import NotFoundPage from "@/features/system/pages/NotFoundPage.jsx";
 import Home from "@/features/products/pages/Home.jsx";
 import CollectionPage from "@/features/products/pages/CollectionPage.jsx";
+import Bag from "@/features/cart/pages/Bag";
+import AppLayout from "./AppLayout";
 
 const routes = createBrowserRouter([
+  {
+    element: <AppLayout />,
+    children: [
+      {
+        path: "/",
+        element: <Home />,
+      },
+      {
+        path: "/products/:id",
+        element: <ProductDetail />,
+      },
+      {
+        path: "/collections",
+        element: <CollectionPage />,
+      },
+      // Protected Routes ( any logged in user can access these routes )
+      {
+        element: <ProtectedRoute allowedRoles={["buyer"]} />,
+        children: [
+          {
+            path: "/bag",
+            element: <Bag />,
+          },
+        ],
+      },
+
+      // Seller Routes ( only users with seller role can access these routes )
+      {
+        element: <ProtectedRoute allowedRoles={["seller"]} />,
+        children: [
+          {
+            path: "/seller",
+            children: [
+              {
+                path: "create-product",
+                element: <CreateProduct />,
+              },
+              {
+                path: "dashboard",
+                element: <Dashboard />,
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
   // Public routes
   {
     path: "/register",
@@ -20,49 +69,7 @@ const routes = createBrowserRouter([
     path: "/login",
     element: <LoginPage />,
   },
-  {
-	path: "/",
-	element: <Home />,
-  },
-  {
-    path: "/products/:id",
-    element: <ProductDetail />,
-  },
-  {
-    path: "/collections",
-    element: <CollectionPage />,
-  },
 
-//   // Protected Routes ( any logged in user can access these routes )
-//   {
-//     element: <ProtectedRoute />,
-//     children: [
-//       {
-//         path: "/",
-//         element: <Home />,
-//       },
-//     ],
-//   },
-
-  // Seller Routes ( only users with seller role can access these routes )
-  {
-    element: <ProtectedRoute allowedRoles={["seller"]} />,
-    children: [
-      {
-        path: "/seller",
-        children: [
-          {
-            path: "create-product",
-            element: <CreateProduct />,
-          },
-          {
-            path: "dashboard",
-            element: <Dashboard />,
-          },
-        ],
-      },
-    ],
-  },
   // 🚫 Unauthorized fallback
   {
     path: "/unauthorized",

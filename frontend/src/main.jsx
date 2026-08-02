@@ -11,7 +11,7 @@ const locomotiveScroll = new LocomotiveScroll();
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+    <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
       <Provider store={store}>
         <App />
       </Provider>

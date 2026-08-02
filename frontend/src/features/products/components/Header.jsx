@@ -21,6 +21,7 @@ export default function Header() {
   const location = useLocation();
   const { theme, setTheme } = useTheme();
 
+  console.log("hello")
 
   return (
     <header className="sticky top-0 z-20 border-b border-border/10 bg-background/90 backdrop-blur">
@@ -47,15 +48,19 @@ export default function Header() {
           </svg>
         </Link>
 
-
-        <nav className="flex items-center gap-4">
-          <Link to="/collections" className={`text-xl font-medium ${location.pathname === "/collections" && "underline"} text-primary duration-300 mr-4`}>
+        <nav className="flex items-center gap-2 md:gap-4">
+          <Link
+            to="/collections"
+            className={`text-xl font-medium ${location.pathname === "/collections" && "underline"} text-primary duration-300 mr-4`}
+          >
             Shop
           </Link>
 
-          <Link to="/bag" >
-            <ShoppingBag className="size-5 hover:text-muted-foreground" />
-          </Link>
+          {user && user.role === "buyer" && (
+            <Link to="/bag">
+              <ShoppingBag className="size-5 hover:text-muted-foreground" />
+            </Link>
+          )}
 
           <Button
             variant="icon"
@@ -63,7 +68,11 @@ export default function Header() {
             className=" hover:text-muted-foreground"
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
           >
-            {theme === "dark" ? <Sun className="size-5" /> : <Moon className="size-5" />}
+            {theme === "dark" ? (
+              <Sun className="size-5" />
+            ) : (
+              <Moon className="size-5" />
+            )}
           </Button>
 
           {user ? (
@@ -84,11 +93,13 @@ export default function Header() {
                   }
                 />
                 <DropdownMenuContent className="w-42 mt-1">
-                  <DropdownMenuGroup>
-                    <Link to="/seller/dashboard">
-                      <DropdownMenuItem>Dashboard</DropdownMenuItem>
-                    </Link>
-                  </DropdownMenuGroup>
+                  {user.role === "seller" && (
+                    <DropdownMenuGroup>
+                      <Link to="/seller/dashboard">
+                        <DropdownMenuItem>Dashboard</DropdownMenuItem>
+                      </Link>
+                    </DropdownMenuGroup>
+                  )}
                   {/* <DropdownMenuSeparator /> */}
                   <DropdownMenuGroup>
                     <DropdownMenuItem

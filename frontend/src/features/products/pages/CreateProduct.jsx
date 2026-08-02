@@ -140,7 +140,6 @@ export default function CreateProduct() {
 
   return (
     <main className="min-h-screen">
-      <Header />
       <section className="mx-auto px-8 py-10 w-full  space-y-10">
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div className="space-y-4">

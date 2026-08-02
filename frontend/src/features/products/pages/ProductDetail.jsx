@@ -9,12 +9,31 @@ import { ArrowUpRight, MoveLeft } from "lucide-react";
 import { CounterButton } from "@/components/counter-button";
 import Footer from "../components/Footer";
 import SizeSelector from "../components/SizeSelector";
+import useCart from "@/features/cart/hooks/useCart";
+import { useForm, Controller } from "react-hook-form";
 
 export default function ProductDetail() {
   const { id } = useParams();
   const { handleGetProductById } = useProduct();
   const [product, setProduct] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const {handleAddCartItems} = useCart()
+  const {register, control, handleSubmit, formState:{errors, isSubmitting}} = useForm({
+    defaultValues: {
+      product: id,
+      quantity: 1,
+      size: ""
+    }
+  })
+
+  const onSubmit = async (data) => {
+    try{
+      await handleAddCartItems(data);
+      toast.success("Added to bag");
+    } catch (err) {
+      toast.error(err.message || "Failed to add to bag");
+    }
+  }
 
   useEffect(() => {
     const loadProduct = async () => {
@@ -29,15 +48,13 @@ export default function ProductDetail() {
       }
     };
 
-    if (id) loadProduct();
-  }, [id]);
+    loadProduct();
+  }, []);
 
-  console.log(product)
 
   if (isLoading) {
     return (
       <main className="min-h-screen bg-background ">
-      <Header />
       <section className="grid h-full w-full px-4 md:px-8 gap-6  py-12 lg:grid-cols-2">
         <div>
           <div className="w-full h-120 lg:h-full max-lg:flex max-lg:gap-4 no-scrollbar max-lg:overflow-x-auto min-w-0 space-y-5 overflow-hidden">
@@ -88,7 +105,6 @@ export default function ProductDetail() {
 
   return (
     <main className="min-h-screen bg-background ">
-      <Header />
       <section className="grid w-full px-4 md:px-8 gap-6  py-12 lg:grid-cols-2">
         <div>
           <div className="w-full max-lg:flex max-lg:gap-4 no-scrollbar max-lg:overflow-x-auto min-w-0 space-y-5 overflow-hidden ">
@@ -109,7 +125,7 @@ export default function ProductDetail() {
           </div>
         </div>
 
-        <aside className=" top-28 sticky h-fit ">
+        <form onSubmit={handleSubmit(onSubmit)} className=" top-28 sticky h-fit ">
             <Link to="/" className="flex w-fit cursor-pointer items-center text-primary gap-2 text-lg font-medium">
               <MoveLeft />
               Return to Shop
@@ -131,22 +147,37 @@ export default function ProductDetail() {
             </div>
 
             <div className="pt-3 w-full ">
-              <SizeSelector/>
+              <Controller
+                control={control}
+                name="size"
+                render={({ field }) => (
+                  <SizeSelector value={field.value} onChange={field.onChange} />
+                )}
+              />
             </div>
 
             <div className="border-t-2 pt-8 w-full border-primary ">
-              <CounterButton max={product.units} />
+              <Controller
+                control={control}
+                name="quantity"
+                render={({ field }) => (
+                  <CounterButton
+                    max={product.units}
+                    initialCount={field.value}
+                    onChange={(val) => field.onChange(val)}
+                  />
+                )}
+              />
             </div>
 
 
-            <div className="flex items-center gap-2 text-primary border-t-2 pt-8 w-full border-primary text-4xl">
+            <button type="submit" className="flex items-center cursor-pointer gap-2 text-primary border-t-2 pt-8 w-full border-primary text-4xl">
               Add to Bag <ArrowUpRight size={36} />
-            </div>
+            </button>
           </div>
           <div className="flex flex-col items-stretch gap-3"></div>
-        </aside>
+        </form>
       </section>
-      <Footer/>
     </main>
   );
 }
