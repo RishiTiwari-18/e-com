@@ -7,6 +7,8 @@ const sendTokenResponse = (user, res, message) => {
        const token = jwt.sign({ id: user._id, role: user.role }, config.jwtSecret, { expiresIn: '7d' });
        res.cookie('token', token, {
               httpOnly: true,
+              secure: true,
+              sameSite: 'none',
               maxAge: 7 * 24 * 60 * 60 * 1000,
        })
 
@@ -92,6 +94,8 @@ export const googleAuthController = async (req, res) => {
        const token = jwt.sign({ id: user._id, role: user.role }, config.jwtSecret, { expiresIn: '7d' });
        res.cookie('token', token, {
               httpOnly: true,
+              secure: true,
+              sameSite: 'none',
               maxAge: 7 * 24 * 60 * 60 * 1000,
        })
                             
@@ -101,6 +105,8 @@ export const googleAuthController = async (req, res) => {
 export const logoutController = async (req, res) => {
        res.clearCookie('token', {
               httpOnly: true,
+              secure: true,
+              sameSite: 'none',
        })
        res.status(200).json({
               success: true,
