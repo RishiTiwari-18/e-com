@@ -41,7 +41,8 @@ function LoginPage() {
   }
 
   const handleGoogleLogin = () => {
-    window.location.href = `${process.env.VITE_API_BASE_URL}/auth/google`
+    const baseURL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api'
+    window.location.href = `${baseURL}/auth/google`
   }
 
   return (
