@@ -31,6 +31,12 @@ if(!process.env.IMAGEKIT_PRIVATE_KEY) {
     process.exit(1); 
 }
 
+if(!process.env.CLIENT_URL) {
+    console.error('CLIENT_URL is not defined in environment variables');
+    process.exit(1); 
+}
+
+
 
 const config = {
     mongoURI: process.env.MONGO_URI,
@@ -38,7 +44,8 @@ const config = {
     googleClientId: process.env.GOOGLE_CLIENT_ID,
     googleClientSecret: process.env.GOOGLE_CLIENT_SECRET,
     imagekitPublicKey: process.env.IMAGEKIT_PUBLIC_KEY,
-    imagekitPrivateKey: process.env.IMAGEKIT_PRIVATE_KEY
+    imagekitPrivateKey: process.env.IMAGEKIT_PRIVATE_KEY,
+    clientUrl: process.env.CLIENT_URL
 }
 
 export default config;
