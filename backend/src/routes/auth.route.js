@@ -4,6 +4,7 @@ import asyncHandler from '../middlewares/asyncHandler.js';
 import { validateLoginUser, validateRegisterUser } from '../validation/auth.validator.js';
 import authUser from '../middlewares/auth.middleware.js';
 import passport from 'passport';
+import config from '../config/config.js';
 
 const authRouter = Router();
 
@@ -15,7 +16,7 @@ authRouter.get("/google",
 )
 
 authRouter.get("/google/callback",
-  passport.authenticate("google", { session: false, failureRedirect: 'http://localhost:5173/login' }), asyncHandler(googleAuthController))
+  passport.authenticate("google", { session: false, failureRedirect: `${config.clientUrl}/login` }), asyncHandler(googleAuthController))
 
 export default authRouter;
 
