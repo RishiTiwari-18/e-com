@@ -17,7 +17,6 @@ export default function CartItem({ item }) {
     })();
   }
 
-  console.log(item);
   return (
     <div className="px-4 text-primary md:px-8 py-10 border-b space-y-4 border-border">
       <div className="flex xl:items-end justify-between">

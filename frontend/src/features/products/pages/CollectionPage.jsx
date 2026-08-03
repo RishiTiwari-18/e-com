@@ -36,7 +36,7 @@ export default function CollectionPage() {
 
   return (
     <main className="min-h-screen">
-      <section className="px-8 py-10 w-full space-y-10">
+      <section className="px-4 md:px-8 py-10 w-full space-y-10">
         <div className=" mb-20">
           <div className="space-y-4">
             <Breadcrumb>

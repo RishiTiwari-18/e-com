@@ -4,9 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import useProduct from "../hooks/useProduct";
-import Header from "../components/Header";
 import Logo from "@/features/system/components/Logo";
-import Footer from "../components/Footer";
 
 export default function Home() {
   const { handleGetHomePageProducts } = useProduct();
@@ -109,6 +107,7 @@ export default function Home() {
           {products?.length > 0 ? (
             products.map((product) => (
                 <Link
+                key={product._id}
                   to={`/products/${product._id}`}
                   className="flex h-full border-r border-b-[0.5px] border-border cursor-pointer flex-col overflow-hidden"
                 >

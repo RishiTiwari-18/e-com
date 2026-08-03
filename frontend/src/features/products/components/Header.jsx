@@ -23,8 +23,6 @@ export default function Header() {
   const location = useLocation();
   const { theme, setTheme } = useTheme();
 
-  console.log("hello")
-
   return (
     <header className="sticky top-0 z-20 border-b border-border/10 bg-background/90 backdrop-blur">
       <div className="mx-auto flex h-16 w-full items-center justify-between px-4 md:px-8">
