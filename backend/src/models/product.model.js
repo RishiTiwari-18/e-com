@@ -45,6 +45,10 @@ const productSchema = new mongoose.Schema({
             values: ['S', 'M', 'L', 'XL', 'XXL'],
             message: 'Invalid product size'
         },
+    },
+    hasSizes: {
+        type: Boolean,
+        default: true,
     }
 }, {
     timestamps: true

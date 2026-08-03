@@ -17,23 +17,27 @@ export default function ProductDetail() {
   const { handleGetProductById } = useProduct();
   const [product, setProduct] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const {handleAddCartItems} = useCart()
-  const {register, control, handleSubmit, formState:{errors, isSubmitting}} = useForm({
+  const { handleAddCartItems } = useCart();
+  const {
+    control,
+    handleSubmit,
+    formState: { isSubmitting },
+  } = useForm({
     defaultValues: {
       product: id,
       quantity: 1,
-      size: ""
-    }
-  })
+      size: "M",
+    },
+  });
 
   const onSubmit = async (data) => {
-    try{
+    try {
       await handleAddCartItems(data);
       toast.success("Added to bag");
     } catch (err) {
       toast.error(err.message || "Failed to add to bag");
     }
-  }
+  };
 
   useEffect(() => {
     const loadProduct = async () => {
@@ -51,37 +55,38 @@ export default function ProductDetail() {
     loadProduct();
   }, []);
 
-
   if (isLoading) {
     return (
       <main className="min-h-screen bg-background ">
-      <section className="grid h-full w-full px-4 md:px-8 gap-6  py-12 lg:grid-cols-2">
-        <div>
-          <div className="w-full h-120 lg:h-full max-lg:flex max-lg:gap-4 no-scrollbar max-lg:overflow-x-auto min-w-0 space-y-5 overflow-hidden">
-            <Skeleton className="h-full w-full rounded-none" />
+        <section className="grid h-full w-full px-4 md:px-8 gap-6  py-12 lg:grid-cols-2">
+          <div>
+            <div className="w-full h-120 lg:h-full max-lg:flex max-lg:gap-4 no-scrollbar max-lg:overflow-x-auto min-w-0 space-y-5 overflow-hidden">
+              <Skeleton className="h-full w-full rounded-none" />
+            </div>
           </div>
-        </div>
 
-        <aside className=" top-28 sticky h-fit ">
-          <Link to="/" className="flex w-fit cursor-pointer items-center text-primary gap-2 text-lg font-medium">
-            <MoveLeft />
-            Return to Shop
-          </Link>
-          <div className="flex flex-col mt-5 gap-6 items-start">
-            <Skeleton className="h-16 w-3/5" />
-            <Skeleton className="h-15 w-1/3" />
-            <Skeleton className="h-8 w-full" />
-            <Skeleton className="h-16 w-full" />
-            <Skeleton className="h-16 w-full" />
-            <Skeleton className="h-16 w-full" />
-          </div>
-        </aside>
-      </section>
-      <Footer />
-    </main>
+          <aside className=" top-28 sticky h-fit ">
+            <Link
+              to="/"
+              className="flex w-fit cursor-pointer items-center text-primary gap-2 text-lg font-medium"
+            >
+              <MoveLeft />
+              Return to Shop
+            </Link>
+            <div className="flex flex-col mt-5 gap-6 items-start">
+              <Skeleton className="h-16 w-3/5" />
+              <Skeleton className="h-15 w-1/3" />
+              <Skeleton className="h-8 w-full" />
+              <Skeleton className="h-16 w-full" />
+              <Skeleton className="h-16 w-full" />
+              <Skeleton className="h-16 w-full" />
+            </div>
+          </aside>
+        </section>
+        <Footer />
+      </main>
     );
   }
-
 
   if (!product) {
     return (
@@ -125,38 +130,46 @@ export default function ProductDetail() {
           </div>
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className=" top-28 sticky h-fit ">
-            <Link to="/" className="flex w-fit cursor-pointer items-center text-primary gap-2 text-lg font-medium">
-              <MoveLeft />
-              Return to Shop
-            </Link>
-          <div className="flex flex-col mt-5 gap-6 items-start">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className=" top-28 sticky h-fit "
+        >
+          <Link
+            to="/"
+            className="flex w-fit cursor-pointer items-center text-primary gap-2 text-lg font-medium"
+          >
+            <MoveLeft />
+            Return to Shop
+          </Link>
+          <div className="flex flex-col mt-5 items-start">
+            <div className="flex flex-col gap-6">
+              <h1 className=" font-normal text-6xl">{product.title}</h1>
 
-            <h1 className=" font-normal text-6xl">
-              {product.title}
-            </h1>
+              <div>
+                <p className=" text-5xl font-semibold font-mono text-primary ">{`Rs.${product.price}`}</p>
+              </div>
 
-            <div>
-              <p className=" text-5xl font-semibold font-mono text-primary ">{`Rs.${product.price}`}</p>
+              <div>
+                <p className=" text-xl">{product.description}</p>
+              </div>
             </div>
 
-            <div>
-              <p className=" text-xl">
-                {product.description}
-              </p>
-            </div>
+            {product.hasSizes === true && (
+              <div className="py-8 w-full border-b-2 border-primary">
+                <Controller
+                  control={control}
+                  name="size"
+                  render={({ field }) => (
+                    <SizeSelector
+                      value={field.value}
+                      onChange={field.onChange}
+                    />
+                  )}
+                />
+              </div>
+            )}
 
-            <div className="pt-3 w-full ">
-              <Controller
-                control={control}
-                name="size"
-                render={({ field }) => (
-                  <SizeSelector value={field.value} onChange={field.onChange} />
-                )}
-              />
-            </div>
-
-            <div className="border-t-2 pt-8 w-full border-primary ">
+            <div className="border-b-2 py-7 flex items-center border-primary w-full">
               <Controller
                 control={control}
                 name="quantity"
@@ -170,8 +183,10 @@ export default function ProductDetail() {
               />
             </div>
 
-
-            <button type="submit" className="flex items-center cursor-pointer gap-2 text-primary border-t-2 pt-8 w-full border-primary text-4xl">
+            <button
+              type="submit"
+              className="flex items-center cursor-pointer pt-8 gap-2 text-primary   w-full text-4xl"
+            >
               Add to Bag <ArrowUpRight size={36} />
             </button>
           </div>

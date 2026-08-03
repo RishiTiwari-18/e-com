@@ -10,10 +10,6 @@ export const addToCart = async (req, res) => {
         throw new AppError("Product ID is required", 400)
     }
 
-    if (!size) {
-        throw new AppError("Size is required", 400);
-    }
-
     if (!quantity || quantity < 1) {
         throw new AppError("Quantity must be at least 1", 400);
     }
@@ -67,5 +63,70 @@ export const getCartItems = async (req, res) => {
     res.status(200).json({
         status: true,
         data: cartItem
+    })
+}
+
+export const updateCartItem = async (req, res) => {
+    const { itemId } = req.params;
+    const { quantity } = req.body;
+
+    if(!quantity || quantity < 1){
+        throw new AppError("Quantity must be at least 1", 400)
+    }
+
+    const cart = await cartModel.findOne({ user: req.user.id });
+
+    if (!cart) {
+        throw new AppError("Cart not found", 404);
+    }
+
+    const itemToUpdate = cart.items.id(itemId);
+
+    if(!itemToUpdate){
+        throw new AppError("Cart item not found", 404);
+    }
+
+    const product = await productModel.findById(itemToUpdate.product);
+
+    if(!product){
+        throw new AppError("Product not found", 404);
+    }
+
+    if(quantity > product.units){
+        throw new AppError(`Only ${product.units} items are available in stock`, 400)
+    }
+
+    itemToUpdate.quantity = quantity;
+    await cart.save();
+
+    res.status(200).json({
+        status: true,
+        message: "Cart item updated successfully",
+        data: cart
+    });
+}
+
+export const deleteCartItem = async (req, res) => {
+    const {id} = req.params
+
+    const cart = await cartModel.findOne({user: req.user.id})
+
+    if(!cart){
+        throw new AppError("Cart not found", 404)
+    }
+
+    const item = cart.items.id(id)
+
+    if(!item){
+        throw new AppError("Cart item not found", 404)
+    }
+
+    item.deleteOne()
+    await cart.save()
+
+    res.status(200).json({
+        status: true,
+        message: "Cart item deleted successfully",
+        data: cart
     })
 }

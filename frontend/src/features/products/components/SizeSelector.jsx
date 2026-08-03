@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
-const sizes = ["S", "M", "L", "XL", "2XL"];
+const sizes = ["S", "M", "L", "XL", "XXL"];
 
 export default function SizeSelector({ value, onChange }) {
   const [size, setSize] = useState("");

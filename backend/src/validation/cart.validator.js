@@ -16,8 +16,12 @@ export const validateCartItem = [
     body('quantity')
         .notEmpty()
         .withMessage('Quantity is required'),
-    body('size')
-        .notEmpty()
-        .withMessage('Product size is required'),
     validateRequest
+];
+
+export const validateCartItemUpdate = [
+    body('quantity')
+        .optional()
+        .isInt({ min: 1 })
+        .withMessage('Quantity must be a positive integer')
 ];

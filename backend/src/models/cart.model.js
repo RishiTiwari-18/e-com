@@ -24,7 +24,6 @@ const cartSchema = new mongoose.Schema({
                 values: ['S', 'M', 'L', 'XL', 'XXL'],
                 message: 'Invalid product size'
             },
-            required: [true, 'Product size is required'],
         }
     }]
 }, {

@@ -8,7 +8,7 @@ import Footer from "@/features/products/components/Footer";
 
 export default function Bag() {
   const { handleSetCartItems } = useCart();
-  const { loading, items } = useSelector((state) => state.cart);
+  const { items } = useSelector((state) => state.cart);
 
   useEffect(() => {
     try {
@@ -39,7 +39,7 @@ export default function Bag() {
       </div>
 
       {items?.items?.map(item => (
-        <CartItem item={item} />
+        <CartItem key={item._id} item={item} />
       ))}
     </div>
   );

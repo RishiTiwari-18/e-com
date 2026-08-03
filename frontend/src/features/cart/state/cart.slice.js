@@ -13,6 +13,7 @@ const cartSlice = createSlice({
         addItems: (state, action) => {
             state.items.push(action.payload)
         },
+
         setLoading: (state, action) => {
             state.loading = action.payload
         }

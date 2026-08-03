@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
-import { setItems, addItems, setLoading } from "../state/cart.slice";
-import { addCartItem, getCartItems } from "../service/cart.service";
+import { setItems, addItems, setLoading} from "../state/cart.slice";
+import { addCartItem, getCartItems, updateCartItem } from "../service/cart.service";
 
 const useCart = () => {
   const dispatch = useDispatch();
@@ -28,10 +28,27 @@ const useCart = () => {
       dispatch(setLoading(false));
     }
   }   
-      
+
+  const handleUpdateCartItem = async (itemId, data) => {
+    try {
+      dispatch(setLoading(true));
+      const response = await updateCartItem(itemId, data);
+    } catch (error) {
+      throw new Error(
+      error.response?.data?.message ||
+      error.response?.data?.error ||
+      error.message ||
+      "Failed to update cart"
+    );
+    } finally {
+      dispatch(setLoading(false));
+    }
+  }
+
   return {
     handleSetCartItems,
-    handleAddCartItems
+    handleAddCartItems,
+    handleUpdateCartItem
   }
 }
 
