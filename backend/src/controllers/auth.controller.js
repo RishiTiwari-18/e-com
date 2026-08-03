@@ -97,3 +97,13 @@ export const googleAuthController = async (req, res) => {
                             
        res.redirect(config.clientUrl)
 }
+
+export const logoutController = async (req, res) => {
+       res.clearCookie('token', {
+              httpOnly: true,
+       })
+       res.status(200).json({
+              success: true,
+              message: 'User logged out successfully',
+       })
+}

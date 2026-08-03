@@ -12,9 +12,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Moon, ShoppingBag, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
+import useAuth from "@/features/auth/hooks/useAuth";
 
 export default function Header() {
   const user = useSelector((state) => state.auth.user);
+  const { handleLogout } = useAuth();
   const avatarSrc = user?.avatar || "";
   const userName = user?.fullname || "User";
   const userInitial = userName.trim().charAt(0).toUpperCase();
@@ -103,6 +105,7 @@ export default function Header() {
                   {/* <DropdownMenuSeparator /> */}
                   <DropdownMenuGroup>
                     <DropdownMenuItem
+                      onClick={() => handleLogout()}
                       className="text-destructive-foreground! mt-2"
                       variant="destructive"
                     >
