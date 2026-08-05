@@ -48,8 +48,8 @@ export default function Bag() {
                 items.map((item) => <CartItem key={item._id || item.id} item={item} />)
             ) : (
                 !loading && (
-                    <div className="px-4 md:px-8 py-20">
-                        <h2 className="text-2xl md:text-[11rem] leading-44  tracking-tight font-bold text-primary">Not even one thing? That's sad.</h2>
+                    <div className=" max-md:min-h-100 px-4 flex  md:px-8 py-10 md:py-20">
+                        <h2 className="text-5xl sm:text-9xl md:text-[11rem] md:leading-44  tracking-tight font-bold text-primary">Not even one thing? That's sad.</h2>
 
                     </div>
                 )
