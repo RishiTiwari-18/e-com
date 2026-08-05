@@ -30,8 +30,17 @@ const cartSlice = createSlice({
     reducers: {
         setItems: (state, action) => {
             const payload = action.payload || { items: [], summary: { subtotal: 0, shipping: 0, total: 0 } };
-            state.items = payload.items || [];
-            state.summary = payload.summary || calculateSummary(state.items);
+            const newItems = payload.items || [];
+            const newSummary = payload.summary || calculateSummary(newItems);
+            if (
+                state.items.length === newItems.length &&
+                JSON.stringify(state.items) === JSON.stringify(newItems) &&
+                state.summary.subtotal === newSummary.subtotal
+            ) {
+                return;
+            }
+            state.items = newItems;
+            state.summary = newSummary;
         },
         updateItemQuantity: (state, action) => {
             const { itemId, quantity } = action.payload;

@@ -1,5 +1,4 @@
-import Header from "@/features/products/components/Header";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import CartItem from "../components/CartItem";
 import { useSelector } from "react-redux";
 import useCart from "../hooks/useCart";
@@ -16,14 +15,23 @@ export default function Bag() {
     const items = useSelector(selectCartItems);
     const summary = useSelector(selectCartSummary);
     const loading = useSelector(selectCartLoading);
+    const didRefresh = useRef(false);
 
     useEffect(() => {
-        try {
-            handleSetCartItems();
-        } catch (error) {
-            toast.error(error.message || "Failed to load cart items");
-        }
-    }, []);
+        if (didRefresh.current) return;
+        didRefresh.current = true;
+        let cancelled = false;
+        (async () => {
+            try {
+                await handleSetCartItems();
+            } catch (error) {
+                if (!cancelled) toast.error(error.message || "Failed to load cart items");
+            }
+        })();
+        return () => {
+            cancelled = true;
+        };
+    }, [handleSetCartItems]);
 
     return (
         <div className="w-full">

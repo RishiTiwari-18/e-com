@@ -21,10 +21,8 @@ export const CounterButton = ({
 
   React.useEffect(() => {
     if (!isControlled) return;
-    if (value !== internalCount) {
-      setInternalCount(value);
-    }
-  }, [value, isControlled, internalCount]);
+    setInternalCount(value);
+  }, [value, isControlled]);
 
   const increment = () => {
     if (count >= max) return;

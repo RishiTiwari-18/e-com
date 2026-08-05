@@ -32,7 +32,7 @@ const useCart = () => {
         };
     }, []);
 
-    const handleSetCartItems = async () => {
+    const handleSetCartItems = useCallback(async () => {
         try {
             dispatch(setLoading(true));
             const response = await getCartItems();
@@ -43,20 +43,20 @@ const useCart = () => {
         } finally {
             dispatch(setLoading(false));
         }
-    };
+    }, [dispatch]);
 
-    const handleAddCartItems = async (item) => {
+    const handleAddCartItems = useCallback(async (item) => {
         try {
             dispatch(setLoading(true));
             const response = await addCartItem(item);
             dispatch(addItems(response.data));
         } catch (error) {
             console.error("Error adding cart item:", error);
-            throw new Error(error?.response?.data?.error  || "Failed to add to cart");
+            throw error;
         } finally {
             dispatch(setLoading(false));
         }
-    };
+    }, [dispatch]);
 
     const syncUpdateWithServer = useCallback(
         async (itemId, quantity, snapshotQty) => {
