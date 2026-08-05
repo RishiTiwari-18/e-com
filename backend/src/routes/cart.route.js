@@ -12,6 +12,6 @@ cartRouter.get('/', authUser, isBuyer, asyncHandler(getCartItems))
 
 cartRouter.patch("/update/:itemId", authUser, isBuyer, validateCartItemUpdate, asyncHandler(updateCartItem));
 
-cartRouter.delete("/delete/id", authUser, isBuyer, asyncHandler(deleteCartItem))
+cartRouter.delete("/delete/:id", authUser, isBuyer, asyncHandler(deleteCartItem))
 
 export default cartRouter;

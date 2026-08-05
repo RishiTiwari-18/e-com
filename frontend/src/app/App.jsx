@@ -3,6 +3,7 @@ import routes from './app.routes'
 import { Toaster } from '@/components/ui/sonner.jsx'
 import useAuth from '@/features/auth/hooks/useAuth'
 import { useEffect } from 'react'
+import LocomotiveScroll from 'locomotive-scroll';
 
 function App() {
   const { handleGetMe } = useAuth()
@@ -18,6 +19,12 @@ function App() {
 
     fetchUser()
   }, [])
+
+  useEffect(() => {
+  const scroll = new LocomotiveScroll();
+
+  return () => scroll.destroy();
+}, []);
 
   return (
     <>

@@ -38,6 +38,10 @@ app.use("/api/auth", authRouter)
 app.use("/api/products", productRouter)
 app.use("/api/cart", cartRouter)
 
+app.get("/health", (req, res) => {
+    res.status(200).json({ message: "Healthy" });
+})
+
 app.use(notFound)
 app.use(errorHandler)
 

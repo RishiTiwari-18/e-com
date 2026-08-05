@@ -1,7 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useState, useEffect, useCallback } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import {
   DropdownMenu,
@@ -14,10 +14,18 @@ import { LogOut, Menu, Moon, ShoppingBag, Sun, User, X } from "lucide-react";
 import { useTheme } from "next-themes";
 import useAuth from "@/features/auth/hooks/useAuth";
 import { cn } from "@/lib/utils";
+import {
+  selectCartItemCount,
+  clearCart,
+} from "@/features/cart/state/cart.slice";
+import useCart from "@/features/cart/hooks/useCart";
 
 export default function Header() {
   const user = useSelector((state) => state.auth.user);
-  const { handleLogout } = useAuth();
+  const cartItemCount = useSelector(selectCartItemCount);
+  const { handleLogout: authLogout } = useAuth();
+  const { handleSetCartItems } = useCart();
+  const dispatch = useDispatch();
   const avatarSrc = user?.avatar || "";
   const userName = user?.fullname || "User";
   const userInitial = userName.trim().charAt(0).toUpperCase();
@@ -26,6 +34,20 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const closeMobileMenu = () => setMobileMenuOpen(false);
+
+  useEffect(() => {
+    if (user && user.role === "buyer") {
+      handleSetCartItems().catch(() => {});
+    }
+  }, [user?.id, user?.role, handleSetCartItems]);
+
+  const handleLogout = useCallback(async () => {
+    try {
+      await authLogout();
+    } finally {
+      dispatch(clearCart());
+    }
+  }, [authLogout, dispatch]);
 
   return (
     <header className="sticky top-0 z-40 border-b border-border/10 bg-background/90 backdrop-blur">
@@ -65,8 +87,11 @@ export default function Header() {
 
           {/* Desktop: Shopping Bag */}
           {user && user.role === "buyer" && (
-            <Link to="/bag" className="hidden md:block">
-              <ShoppingBag className="size-5 hover:text-muted-foreground" />
+            <Link to="/bag"  className={cn(
+              "hidden md:block text-lg font-medium text-primary duration-300 mr-2 lg:mr-4",
+              location.pathname === "/bag" && "underline"
+            )}>
+              Bag ({cartItemCount})
             </Link>
           )}
 
@@ -167,7 +192,7 @@ export default function Header() {
               location.pathname === "/collections" && "bg-muted"
             )}
           >
-            Collections
+            Shop
           </Link>
 
           {/* Shopping Bag (buyer only) */}
@@ -180,7 +205,7 @@ export default function Header() {
                 location.pathname === "/bag" && "bg-muted"
               )}
             >
-              My Bag
+              Bag({cartItemCount})
             </Link>
           )}
 

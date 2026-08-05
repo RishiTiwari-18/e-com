@@ -1,6 +1,7 @@
 import productModel from "../models/product.model.js"
 import AppError from "../utils/appError.js"
 import cartModel from "../models/cart.model.js"
+import { calculateCart } from "../utils/calculateCart.js"
 
 export const addToCart = async (req, res) => {
     const {product, quantity = 1, size} = req.body
@@ -39,10 +40,13 @@ export const addToCart = async (req, res) => {
 
     await cartItem.save()
 
+    const updatedCart = await cartModel.findOne({ user: user.id }).populate("items.product");
+    const cartSummary = calculateCart(updatedCart);
+
     res.status(200).json({
         status: true,
         message: "Product added to cart successfully",
-        data: cartItem
+        data: cartSummary
     })
 
 }
@@ -59,10 +63,11 @@ export const getCartItems = async (req, res) => {
             }
         })
     }
+    const cartSummary = calculateCart(cartItem)
 
     res.status(200).json({
         status: true,
-        data: cartItem
+        data: cartSummary
     })
 }
 
@@ -99,10 +104,13 @@ export const updateCartItem = async (req, res) => {
     itemToUpdate.quantity = quantity;
     await cart.save();
 
+    const updatedCart = await cartModel.findOne({ user: req.user.id }).populate("items.product");
+    const cartSummary = calculateCart(updatedCart);
+
     res.status(200).json({
         status: true,
         message: "Cart item updated successfully",
-        data: cart
+        data: cartSummary
     });
 }
 
@@ -124,9 +132,21 @@ export const deleteCartItem = async (req, res) => {
     item.deleteOne()
     await cart.save()
 
+    const updatedCart = await cartModel.findOne({ user: req.user.id }).populate("items.product");
+    
+    if (!updatedCart || updatedCart.items.length === 0) {
+        return res.status(200).json({
+            status: true,
+            message: "Cart item deleted successfully",
+            data: { items: [], summary: { subtotal: 0, shipping: 0, total: 0 } }
+        });
+    }
+
+    const cartSummary = calculateCart(updatedCart);
+
     res.status(200).json({
         status: true,
         message: "Cart item deleted successfully",
-        data: cart
+        data: cartSummary
     })
 }

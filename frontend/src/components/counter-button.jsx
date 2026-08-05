@@ -7,19 +7,30 @@ import { cn } from "@/lib/utils";
 
 export const CounterButton = ({
   initialCount = 0,
+  value,
   min = 0,
   max = 99,
   onChange,
   className
 }) => {
-  const [count, setCount] = React.useState(initialCount);
+  const isControlled = value !== undefined;
+  const [internalCount, setInternalCount] = React.useState(initialCount);
   const [direction, setDirection] = React.useState(1);
+
+  const count = isControlled ? value : internalCount;
+
+  React.useEffect(() => {
+    if (!isControlled) return;
+    if (value !== internalCount) {
+      setInternalCount(value);
+    }
+  }, [value, isControlled, internalCount]);
 
   const increment = () => {
     if (count >= max) return;
     setDirection(1);
     const next = count + 1;
-    setCount(next);
+    if (!isControlled) setInternalCount(next);
     onChange?.(next);
   };
 
@@ -27,7 +38,7 @@ export const CounterButton = ({
     if (count <= min) return;
     setDirection(-1);
     const next = count - 1;
-    setCount(next);
+    if (!isControlled) setInternalCount(next);
     onChange?.(next);
   };
 

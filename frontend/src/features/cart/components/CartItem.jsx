@@ -4,18 +4,24 @@ import useCart from "../hooks/useCart";
 import { toast } from "sonner";
 
 export default function CartItem({ item }) {
-  const { handleUpdateCartItem } = useCart();
+  const { handleUpdateCartItem, handleDeleteCartItem } = useCart();
 
   const handleItemUpdate = (val) => {
-    // if (val === item.quantity) return;
-    (async () => {
-      try {
-        await handleUpdateCartItem(item._id || item.id, { quantity: val });
-      } catch (error) {
-        toast.error(error.message || "Failed to update cart item");
-      }
-    })();
-  }
+    if (val === item.quantity) return;
+    handleUpdateCartItem(item._id || item.id, { quantity: val }).catch((error) => {
+      toast.error(error.message || "Failed to update cart item");
+    });
+  };
+
+  const handleDelete = async () => {
+    const itemId = item._id || item.id;
+    try {
+      await handleDeleteCartItem(itemId);
+      toast.success("Item removed from bag");
+    } catch (error) {
+      toast.error(error.message || "Failed to remove item");
+    }
+  };
 
   return (
     <div className="px-4 text-primary md:px-8 py-10 border-b space-y-4 border-border">
@@ -37,30 +43,42 @@ export default function CartItem({ item }) {
             <img
               className="h-full w-full object-cover"
               src={item.product.images[0]}
-              alt=""
+              alt={item.product.title || ""}
             />
           </div>
 
           <div className="hidden xl:flex flex-col justify-between items-end">
-            <button className="text-4xl cursor-pointer">Delete</button>
-                    <CounterButton
-                      initialCount={item.quantity}
-                      className="w-40"
-                      max={item.product.units}
-                      onChange={(val) => handleItemUpdate(val)}
-                    />
+            <button
+              className="text-4xl cursor-pointer hover:opacity-70 transition-opacity"
+              onClick={handleDelete}
+            >
+              Delete
+            </button>
+            <CounterButton
+              value={item.quantity}
+              initialCount={item.quantity}
+              className="w-40"
+              min={1}
+              max={item.product.units}
+              onChange={(val) => handleItemUpdate(val)}
+            />
           </div>
         </div>
       </div>
 
       <div className="flex xl:hidden flex-1 items-end justify-between md:gap-10">
         <CounterButton
-            initialCount={item.quantity}
-            className="w-36   md:w-40"
-            max={item.product.units}
-            onChange={(val) => handleItemUpdate(val)}
+          value={item.quantity}
+          initialCount={item.quantity}
+          className="w-36 md:w-40"
+          min={1}
+          max={item.product.units}
+          onChange={(val) => handleItemUpdate(val)}
         />
-        <button className="text-xl md:text-2xl lg:text-4xl cursor-pointer">
+        <button
+          className="text-xl md:text-2xl lg:text-4xl cursor-pointer hover:opacity-70 transition-opacity"
+          onClick={handleDelete}
+        >
           Delete
         </button>
       </div>

@@ -14,3 +14,8 @@ export const updateCartItem = async (itemId, data) => {
     const response = await api.patch(`/cart/update/${itemId}`, data)
     return response.data
 }
+
+export const deleteCartItem = async (itemId) => {
+    const response = await api.delete(`/cart/delete/${itemId}`)
+    return response.data
+}

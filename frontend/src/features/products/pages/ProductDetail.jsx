@@ -36,6 +36,7 @@ export default function ProductDetail() {
       toast.success("Added to bag");
     } catch (err) {
       toast.error(err.message || "Failed to add to bag");
+      console.log(err)
     }
   };
 
