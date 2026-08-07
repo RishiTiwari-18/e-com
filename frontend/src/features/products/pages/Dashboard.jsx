@@ -14,7 +14,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { Delete, Edit, Package, Trash, Trash2 } from "lucide-react";
+import {  Edit, Package, Trash2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const getStatus = (units) => {
@@ -36,7 +36,9 @@ export default function Dashboard() {
   const navigate = useNavigate();
 
   const productsToDisplay =
-    sellerProducts && sellerProducts.length > 0 ? sellerProducts : fakeProducts;
+    sellerProducts && sellerProducts.length > 0 ? sellerProducts : [];
+
+
 
   useEffect(() => {
     const loadProducts = async () => {
