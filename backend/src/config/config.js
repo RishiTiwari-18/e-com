@@ -31,6 +31,16 @@ if(!process.env.IMAGEKIT_PRIVATE_KEY) {
     process.exit(1); 
 }
 
+if(!process.env.RAZORPAY_API_KEY) {
+    console.error('RAZORPAY_API_KEY is not defined in environment variables');
+    process.exit(1); 
+}
+
+if(!process.env.RAZORPAY_API_SECRET) {
+    console.error('RAZORPAY_API_SECRET is not defined in environment variables');
+       process.exit(1); 
+}
+
 if(!process.env.CLIENT_URL) {
     console.error('CLIENT_URL is not defined in environment variables');
     process.exit(1); 
@@ -45,7 +55,9 @@ const config = {
     googleClientSecret: process.env.GOOGLE_CLIENT_SECRET,
     imagekitPublicKey: process.env.IMAGEKIT_PUBLIC_KEY,
     imagekitPrivateKey: process.env.IMAGEKIT_PRIVATE_KEY,
-    clientUrl: process.env.CLIENT_URL
+    clientUrl: process.env.CLIENT_URL,
+    razorpayApiKey: process.env.RAZORPAY_API_KEY,
+    razorpayApiSecret: process.env.RAZORPAY_API_SECRET, 
 }
 
 export default config;

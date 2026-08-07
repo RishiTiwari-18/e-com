@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { Spinner } from "@/components/ui/spinner.jsx";
@@ -6,8 +6,6 @@ import { toast } from "sonner";
 import useProduct from "../hooks/useProduct";
 import { Button } from "@/components/ui/button";
 import Heading from "@/components/heading";
-
-import Header from "../components/Header";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -16,38 +14,29 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { Delete, Edit, Package, Trash, Trash2 } from "lucide-react";
+import { cn } from "@/lib/utils";
+
+const getStatus = (units) => {
+  if (units <= 0) return { label: "Out of Stock", className: "bg-destructive/10 text-destructive-foreground" };
+  if (units <= 10) return { label: "Low Stock", className: "bg-amber-500/10 text-amber-700 dark:text-amber-400" };
+  return { label: "Active", className: "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400" };
+};
+
+const getImageSrc = (product) => {
+  if (product.images && Array.isArray(product.images) && product.images[0]) {
+    return product.images[0];
+  }
+  return null;
+};
 
 export default function Dashboard() {
   const { handleGetSellerProducts } = useProduct();
   const { sellerProducts, loading } = useSelector((state) => state.products);
   const navigate = useNavigate();
 
-  const fakeProducts = [
-    {
-      id: "PRD-1001",
-      title: "Wireless Mouse",
-      price: 29.99,
-      inventory: 42,
-      status: "Active",
-    },
-    {
-      id: "PRD-1002",
-      title: "Mechanical Keyboard",
-      price: 89.0,
-      inventory: 18,
-      status: "Low Stock",
-    },
-    {
-      id: "PRD-1003",
-      title: "USB-C Hub",
-      price: 49.5,
-      inventory: 0,
-      status: "Out of Stock",
-    },
-  ];
-
   const productsToDisplay =
-    sellerProducts?.length > 0 ? sellerProducts : fakeProducts;
+    sellerProducts && sellerProducts.length > 0 ? sellerProducts : fakeProducts;
 
   useEffect(() => {
     const loadProducts = async () => {
@@ -94,36 +83,135 @@ export default function Dashboard() {
             <Spinner />
           </div>
         ) : (
-          <div className="overflow-x-auto rounded-lg">
-            <table className="min-w-full text-sm">
-              <thead className=" text-left">
-                <tr>
-                  <th className="px-4 py-3 font-medium text-stone-700">Product</th>
-                  <th className="px-4 py-3 font-medium text-stone-700">ID</th>
-                  <th className="px-4 py-3 font-medium text-stone-700">Price</th>
-                  <th className="px-4 py-3 font-medium text-stone-700">Inventory</th>
-                  <th className="px-4 py-3 font-medium text-stone-700">Status</th>
-                  <th className="px-4 py-3 font-medium text-stone-700">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {productsToDisplay.map((product) => (
-                  <tr key={product.id} className="border-t border">
-                    <td className="px-4 py-3 text-stone-900">{product.title}</td>
-                    <td className="px-4 py-3 text-stone-600">{product.id}</td>
-                    <td className="px-4 py-3 text-stone-900">${Number(product.price).toFixed(2)}</td>
-                    <td className="px-4 py-3 text-stone-900">{product.inventory ?? 0}</td>
-                    <td className="px-4 py-3 text-stone-700">{product.status || "Active"}</td>
-                    <td className="px-4 py-3">
-                      <div className="flex items-center gap-3">
-                        <button className="text-blue-600 hover:underline">Edit</button>
-                        <button className="text-red-600 hover:underline">Delete</button>
+          <div className="px-4 md:px-8">
+            <div className="overflow-hidden rounded-lg border border-border bg-card text-card-foreground">
+              <div className="hidden md:grid grid-cols-[1.8fr_1fr_1fr_1fr_1fr_0.6fr] gap-4 px-6 py-4 text-sm font-medium text-muted-foreground border-b border-border bg-muted/30">
+                <div>Product</div>
+                <div>ID</div>
+                <div>Price</div>
+                <div>Inventory</div>
+                <div>Status</div>
+                <div className="text-right">Actions</div>
+              </div>
+
+              <ul className="divide-y divide-border">
+                {productsToDisplay.map((product) => {
+                  const productId = product._id || product.id;
+                  const inventory = product.units ?? product.inventory ?? 0;
+                  const status = getStatus(inventory);
+                  const imageSrc = getImageSrc(product);
+
+                  return (
+                    <li
+                      key={productId}
+                      className="grid grid-cols-1 md:grid-cols-[1.8fr_1fr_1fr_1fr_1fr_0.6fr] gap-4 items-center px-4 md:px-6 py-4 md:py-5 hover:bg-muted/30 transition-colors"
+                    >
+                      {/* Product: image + name */}
+                      <div className="flex items-center gap-4 min-w-0">
+                        <div className="relative shrink-0 h-16 w-16 md:h-20 md:w-20 rounded-md border border-border overflow-hidden bg-background flex items-center justify-center">
+                          {imageSrc ? (
+                            <img
+                              src={imageSrc}
+                              alt={product.title || ""}
+                              className="h-full w-full object-cover"
+                              loading="lazy"
+                            />
+                          ) : (
+                            <Package className="h-8 w-8 text-muted-foreground/60" />
+                          )}
+                        </div>
+                        <div className="min-w-0 flex flex-col gap-0.5">
+                          <span className="font-medium text-primary truncate text-base">
+                            {product.title}
+                          </span>
+                          {product.category && (
+                            <span className="text-xs capitalize text-muted-foreground">
+                              {product.category}
+                              {product.size ? ` • ${product.size}` : ""}
+                            </span>
+                          )}
+                        </div>
                       </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+
+                      {/* ID (mobile: label above) */}
+                      <div className="flex flex-col md:block gap-0.5">
+                        <span className="md:hidden text-xs font-medium text-muted-foreground">
+                          ID
+                        </span>
+                        <span className="font-mono text-xs text-muted-foreground md:text-sm md:text-muted-foreground/90 truncate">
+                          #{String(productId).slice(-8)}
+                        </span>
+                      </div>
+
+                      {/* Price */}
+                      <div className="flex flex-col md:block gap-0.5">
+                        <span className="md:hidden text-xs font-medium text-muted-foreground">
+                          Price
+                        </span>
+                        <span className="font-medium tabular-nums text-primary md:text-sm">
+                          Rs.{Number(product.price).toLocaleString(undefined, {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          })}
+                        </span>
+                      </div>
+
+                      {/* Inventory */}
+                      <div className="flex flex-col md:block gap-0.5">
+                        <span className="md:hidden text-xs font-medium text-muted-foreground">
+                          Inventory
+                        </span>
+                        <span
+                          className={cn(
+                            "font-medium tabular-nums",
+                            inventory === 0
+                              ? "text-destructive-foreground"
+                              : inventory <= 10
+                              ? "text-amber-600 dark:text-amber-500"
+                              : "text-primary"
+                          )}
+                        >
+                          {inventory} {inventory === 1 ? "unit" : "units"}
+                        </span>
+                      </div>
+
+                      {/* Status */}
+                      <div className="flex flex-col items-start md:block gap-0.5">
+                        <span className="md:hidden text-xs font-medium text-muted-foreground">
+                          Status
+                        </span>
+                        <span
+                          className={cn(
+                            "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium",
+                            status.className
+                          )}
+                        >
+                          <span
+                            className={cn(
+                              "mr-1.5 inline-block h-1.5 w-1.5 rounded-full",
+                              status.label === "Active" && "bg-emerald-500",
+                              status.label === "Low Stock" && "bg-amber-500",
+                              status.label === "Out of Stock" && "bg-destructive",
+                            )}
+                          />
+                          {status.label}
+                        </span>
+                      </div>
+
+                      {/* Actions */}
+                      <div className="flex md:justify-end gap-5 pt-1 md:pt-0">
+                        <button className="w-5 h-5 text-muted-foreground cursor-pointer hover:text-muted-foreground/80">
+                          <Edit />
+                        </button>
+                        <button className="w-5 h-5 text-muted-foreground cursor-pointer hover:text-muted-foreground/80">
+                          <Trash2 />
+                        </button>
+                        </div>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
           </div>
         )}
       </section>
