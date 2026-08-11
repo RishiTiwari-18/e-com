@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
 import useProduct from "../hooks/useProduct";
-import Header from "../components/Header";
 import { ArrowUpRight, MoveLeft } from "lucide-react";
 import { CounterButton } from "@/components/counter-button";
 import Footer from "../components/Footer";
 import SizeSelector from "../components/SizeSelector";
 import useCart from "@/features/cart/hooks/useCart";
 import { useForm, Controller } from "react-hook-form";
+import { useSelector } from "react-redux";
 
 export default function ProductDetail() {
   const { id } = useParams();
@@ -18,6 +18,9 @@ export default function ProductDetail() {
   const [product, setProduct] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const { handleAddCartItems } = useCart();
+  const user = useSelector((state) => state.auth.user);
+  const navigate = useNavigate();
+  const location = useLocation();
   const {
     control,
     handleSubmit,
@@ -36,7 +39,7 @@ export default function ProductDetail() {
       toast.success("Added to bag");
     } catch (err) {
       toast.error(err.message || "Failed to add to bag");
-      console.log(err)
+      console.log(err);
     }
   };
 
@@ -68,7 +71,7 @@ export default function ProductDetail() {
 
           <aside className=" top-28 sticky h-fit ">
             <Link
-              to="/"
+              to="/collections"
               className="flex w-fit cursor-pointer items-center text-primary gap-2 text-lg font-medium"
             >
               <MoveLeft />
@@ -136,7 +139,7 @@ export default function ProductDetail() {
           className=" top-28 sticky h-fit "
         >
           <Link
-            to="/"
+            to="/collections"
             className="flex w-fit cursor-pointer items-center text-primary gap-2 text-lg font-medium"
           >
             <MoveLeft />
@@ -184,12 +187,29 @@ export default function ProductDetail() {
               />
             </div>
 
-            <button
-              type="submit"
-              className="flex items-center cursor-pointer pt-8 gap-2 text-primary   w-full text-4xl"
-            >
-              Add to Bag <ArrowUpRight size={36} />
-            </button>
+            {user ? (
+              <button
+                disabled={isSubmitting}
+                type="submit"
+                className="flex items-center cursor-pointer pt-8 gap-2 text-primary w-full text-4xl"
+              >
+                Add to Bag <ArrowUpRight size={36} />
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={() =>
+                  navigate("/login", {
+                    state: {
+                      from: location.pathname,
+                    },
+                  })
+                }
+                className="flex items-center cursor-pointer pt-8 gap-2 text-primary w-full text-4xl"
+              >
+                Add to Bag <ArrowUpRight size={36} />
+              </button>
+            )}
           </div>
           <div className="flex flex-col items-stretch gap-3"></div>
         </form>

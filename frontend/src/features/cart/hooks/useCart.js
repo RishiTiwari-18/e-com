@@ -38,8 +38,8 @@ const useCart = () => {
             const response = await getCartItems();
             dispatch(setItems(response.data));
         } catch (error) {
-            console.error("Error setting cart items:", error);
-            throw error;
+            const message = error?.response?.data?.error || 'Something went wrong'
+            throw new Error(message);
         } finally {
             dispatch(setLoading(false));
         }
@@ -51,8 +51,8 @@ const useCart = () => {
             const response = await addCartItem(item);
             dispatch(addItems(response.data));
         } catch (error) {
-            console.error("Error adding cart item:", error);
-            throw error;
+            const message = error?.response?.data?.error || 'Something went wrong'
+            throw new Error(message)
         } finally {
             dispatch(setLoading(false));
         }
