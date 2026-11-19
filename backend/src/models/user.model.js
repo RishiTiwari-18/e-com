@@ -16,14 +16,7 @@ const userSchema = new mongoose.Schema({
     },
     contact: {
         type: String,
-        unique: true,
         trim: true,
-        // countryCode: String,
-        // number: String,
-        // full: {
-        //     type: String,
-        //     unique: true,
-        // },
     },
     role: {
         type: String,
@@ -46,6 +39,16 @@ const userSchema = new mongoose.Schema({
 }, {
     timestamps: true
 });
+
+// Unique only when a contact string is present. Google accounts omit this field,
+// and a plain unique index treats every missing value as null.
+userSchema.index(
+    { contact: 1 },
+    {
+        unique: true,
+        partialFilterExpression: { contact: { $type: "string" } },
+    }
+);
 
 userSchema.pre('save', async function () {
     if (!this.isModified('password')) return
